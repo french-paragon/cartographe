@@ -28,11 +28,11 @@
 			
 			if (file_exists($rootF.'points_models/'.$pmodelName)) { //si le dossier du model existe
 					
-				$this->modelName = $pmodelName;
+				$this->modelName = $pmodelName; //on charge le modèle mais pas de message.
 					
 			} else if (file_exists($rootF.'points_models/'.self::DELFAUTMODELNAME)) { //sinon si un modèle par défaut existe.
 				
-				$this->modelName = self::DELFAUTMODELNAME;
+				$this->modelName = self::DELFAUTMODELNAME; //on le charge normallement
 				$this->message = self::USEDELFAUTMODELMESSAGE;
 				
 			} else { //sinon
