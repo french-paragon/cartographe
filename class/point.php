@@ -16,7 +16,7 @@
 		function __construct($cords, $pmodelName, $pmodelParams) {
 			parent::__construct($cords);
 			
-			if ($conf && isset($conf_values['rootFolder'])) { //si la configuration en chargée.
+			if ($conf AND isset($conf_values['rootFolder'])) { //si la configuration en chargée.
 			
 				$rootF = $conf_values['rootFolder']; 
 				
