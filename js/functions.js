@@ -1,3 +1,9 @@
+/*
+ * 
+ * get From http://www.cocoapp.eu/2011/02/16/proteger-son-formulaire-de-login-avec-javascript-et-php/
+ * 
+ * */
+
 function loginValidation(pPass, pBuff, pCon){
     //Récupération du mot de passe
     var pass = pPass.value;
