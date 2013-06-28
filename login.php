@@ -70,7 +70,7 @@
 	
 } else {
 	
-	$_SESSION["log"]->getSessionOpenMessage(); //si l'utilisateur est déjà loqué on lui renvoie son message de bienvenue.
+	$_SESSION["log"]->getSessionOpenMessage(); //si l'utilisateur est déjà logué on lui renvoie son message de bienvenue.
 	
 }
 
