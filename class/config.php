@@ -47,7 +47,7 @@
 				
 			}else {
 				
-				self::$general_messages += '\n\n!no var "'.$paramName.'" define.';
+				self::$general_messages += "\n\n!no var \"".$paramName."\" define.";
 				
 				return null;	
 				
