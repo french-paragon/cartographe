@@ -45,18 +45,52 @@
 			
 				return $this->user_params[$paramName];
 				
-			} else if (class_exists('db')) {
-			
-					//here get param from DB.
+			}else {
 				
-			} else {
-				
-				self::$general_messages += "\n\n!no DB var define.";
+				self::$general_messages += '\n\n!no var "'.$paramName.'" define.';
 				
 				return null;	
 				
 			}
 			
+		}
+		
+		public static function getGeneralParam($paramName){
+			
+			if (isset(self::$general_params[$paramName])) {
+			
+				return self::$general_params[$paramName];
+				
+			}else {
+				
+				self::$general_messages += '\n\n!no var "'.$paramName.'" define.';
+				
+				return null;	
+				
+			}
+		}
+		
+		public static function setGeneraéParam($paramName, $paramValue){
+			self::$general_params[$paramName] = $paramValue;
+		}
+		
+		public static function getUserParam($paramName){
+			
+			if (isset($this->user_params[$paramName])) {
+			
+				return $this->user_params[$paramName];
+				
+			}else {
+				
+				$this->user_messages += '\n\n!no var "'.$paramName.'" define.';
+				
+				return null;	
+				
+			}
+		}
+		
+		public function setUserParam($paramName, $paramValue){
+			$this->user_params[$paramName] = $paramValue;
 		}
 		
 	}
