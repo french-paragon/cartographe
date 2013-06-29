@@ -9,6 +9,8 @@
 		protected $dbPsw;
 		protected $dbPrefix;
 		
+		protected $connection;
+		
 		public function __construct($pdbName, $pdbHost, $pdbUser, $pdbPsw, $pdbPrefix) {
 			
 			$this->dbName = $pdbName;
@@ -31,6 +33,40 @@
 				
 			}
 			
+		}
+		
+		public function isPDOConnected(){
+		
+			if (get_class($this->connection) == "PDO") {
+				return true;
+			}else {
+				return false;
+			}
+			
+		}
+		
+		public function connectPDO() {
+			
+			if ($this->isReady()) {
+			
+				try {
+					$this->connection = new PDO('mysql:host='.$this->dbHost.';dbname='.$this->dbName, $this->dbUser, $this->dbPsw);
+				} catch (PDOException $e) {
+					echo "Erreur !: " . $e->getMessage() . "<br/>";
+					return false;
+				}
+				
+				return true;
+				
+			}
+			else {
+				return false;
+			}
+			
+		}
+		
+		public function disconnect() {
+				$this->connection = null;
 		}
 		
 		public function setParams($pName, $pHost, $pUser, $pPsw, $pPrefix) { //change les paramètre sauf s'ils sont spécifiés comme étant null
