@@ -13,7 +13,7 @@ COLLATE=latin1_general_ci
 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS points
-(`index` int(11) unsigned NOT NULL auto_increment, `id_carte` int(11) unsigned NOT NULL, `model` text , `media_id` int(11) unsigned NOT NULL, `media_type` text, `x_size` int(11), `y_size` int(11), `x_pos` int(11), `y_pos` int(11), `is_public` tinyint(1), `description` text, PRIMARY KEY  (`index`), FULLTEXT (`description`))
+(`index` int(11) unsigned NOT NULL auto_increment, `id_carte` int(11) unsigned NOT NULL, `model` text , `model_params` text, `media_id` int(11) unsigned NOT NULL, `media_type` text, `x_size` int(11), `y_size` int(11), `x_pos` int(11), `y_pos` int(11), `is_public` tinyint(1), `description` text, PRIMARY KEY  (`index`), FULLTEXT (`description`))
 ENGINE=MyISAM
 DEFAULT CHARSET=latin1
 COLLATE=latin1_general_ci

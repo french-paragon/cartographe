@@ -1,6 +1,7 @@
 <?php
     class carte
     {
+		protected $index;
 		protected $name;
 		protected $image_fond;
 		protected $deco_style;
@@ -10,8 +11,9 @@
 		protected $message;
 		protected $isPublic;
 		 
-		public function __construct($pName, $pImage_fond, $pDeco_style, $pX_size, $pY_size, $pDecription, $pPublic){
+		public function __construct($pIndex, $pName, $pImage_fond, $pDeco_style, $pX_size, $pY_size, $pDecription, $pPublic){
 			
+			$this->index = $pIndex;
 			$this->name = $pName;
 			$this->image_fond = $pImage_fond;
 			$this->deco_style = $pDeco_style;
