@@ -2,20 +2,20 @@
 
 	class mapLoader extends db {
 	
-		getMapsList() {
+		public function getMapsList() {
 			
 			if ($this->isPDOConnected()) {
 				
+				$retour = array();
+					
 				try {
 					
-					$response = $this->connection->query('SELECT `jeux`.`full_titre` AS gTitle,`'.$this->dbPrefix.'cartes`.`name` AS mapName,`'.$this->dbPrefix.'cartes`.`image_fond` AS fImage,`'.$this->dbPrefix.'cartes`.`deco_style` AS decoStyle,`'.$this->dbPrefix.'cartes`.`x_size` AS xSize,`'.$this->dbPrefix.'cartes`.`y_size` AS ySize,`'.$this->dbPrefix.'cartes`.`is_public` AS isPublic,`'.$this->dbPrefix.'cartes`.`description` AS description,`'.$this->dbPrefix.'cartes`.`index` AS index FROM '.$this->dbPrefix.'jeux AS jeux
-LEFT JOIN `'.$this->dbName.'`.`'.$this->dbPrefix.'cartes` ON `'.$this->dbPrefix.'jeux`.`index` = `'.$this->dbPrefix.'cartes`.`id_jeu`');
+					$response = $this->connection->query('SELECT ca.`index` , ga.`full_titre`, ca.`name` , ca.`image_fond` , ca.`deco_style`, ca.`deco_style_params` , ca.`x_size` , ca.`y_size` , ca.`is_public` , ca.`description` FROM '.$this->dbPrefix.'cartes AS ca LEFT JOIN `'.$this->dbPrefix.'jeux` AS ga ON ca.`id_jeu` = ga.`index`');
 
-					$retour = array();
 
-					while ($donnees = $reponse->fetch();) {
+					while ($donnees = $reponse->fetch()) {
 						
-						$retour[$donnees['gTitle']]['index'] = new carte($donnees['mapName'], $donnees['fImage'], $donnees['decoStyle'], $donnees['xSize'], $donnees['ySize'], $donnees['description'], $donnees['isPublic']);
+						$retour[$donnees['full_titre']][$donnees['index']] = new carte($donnees['index'], $donnees['name'], $donnees['image_fond'], $donnees['deco_style'], $donnees['deco_style_params'], $donnees['x_size'], $donnees['y_size'], $donnees['description'], $donnees['is_public']);
 						
 					}
 					
@@ -31,6 +31,66 @@ LEFT JOIN `'.$this->dbName.'`.`'.$this->dbPrefix.'cartes` ON `'.$this->dbPrefix.
 			
 				return false;
 				
+			}
+			
+		}
+		
+		public function getMapWithID ($pID) {
+			
+			if ($this->isPDOConnected()) {
+				
+				$retour = null;
+				
+				try {
+					
+					$response = $this->connection->query('SELECT ca.`index` , ga.`full_titre`, ca.`name` , ca.`image_fond` , ca.`deco_style`, ca.`deco_style_params` , ca.`x_size` , ca.`y_size` , ca.`is_public` , ca.`description` FROM '.$this->dbPrefix.'cartes AS ca LEFT JOIN `'.$this->dbPrefix.'jeux` AS ga ON ca.`id_jeu` = ga.`index` WHERE ca.`index` = '.$pID.'');
+					
+					$donnees = $reponse->fetch();
+					
+					$retour = new carte($donnees['index'], $donnees['name'], $donnees['image_fond'], $donnees['deco_style'], $donnees['deco_style_params'], $donnees['x_size'], $donnees['y_size'], $donnees['description'], $donnees['is_public']);
+					
+				}catch (PDOException $e){
+					
+					return false;
+					
+				}
+				
+				return $retour;
+				
+			}
+			
+			else {
+				return false;
+			}
+			
+		}
+		
+		public function getMapWithName ($pName) {
+			
+			if ($this->isPDOConnected()) {
+				
+				$retour = null;
+				
+				try {
+					
+					$response = $this->connection->query('SELECT ca.`index` , ga.`full_titre`, ca.`name` , ca.`image_fond` , ca.`deco_style`, ca.`deco_style_params` , ca.`x_size` , ca.`y_size` , ca.`is_public` , ca.`description` FROM '.$this->dbPrefix.'cartes AS ca LEFT JOIN `'.$this->dbPrefix.'jeux` AS ga ON ca.`id_jeu` = ga.`index` WHERE ca.`name` = "'.$pName.'"');
+					
+					$donnees = $reponse->fetch();
+					
+					$retour = new carte($donnees['index'], $donnees['name'], $donnees['image_fond'], $donnees['deco_style'], $donnees['deco_style_params'], $donnees['x_size'], $donnees['y_size'], $donnees['description'], $donnees['is_public']);
+					
+				}catch (PDOException $e){
+					
+					return false;
+					
+				}
+				
+				return $retour;
+				
+			}
+			
+			else {
+				return false;
 			}
 			
 		}

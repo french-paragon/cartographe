@@ -6,7 +6,7 @@ COLLATE=latin1_general_ci
 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS cartes
-(`index` int(11) unsigned NOT NULL auto_increment, `id_jeu` int(11) unsigned NOT NULL, `name` text , `image_fond` text, `deco_style` text, `x_size` int(11), `y_size` int(11), `is_public` tinyint(1), `description` text, PRIMARY KEY  (`index`), FULLTEXT (`name`, `description`))
+(`index` int(11) unsigned NOT NULL auto_increment, `id_jeu` int(11) unsigned NOT NULL, `name` text , `image_fond` text, `deco_style` text, `deco_style_params` text, `x_size` int(11), `y_size` int(11), `is_public` tinyint(1), `description` text, PRIMARY KEY  (`index`), FULLTEXT (`name`, `description`))
 ENGINE=MyISAM
 DEFAULT CHARSET=latin1
 COLLATE=latin1_general_ci
