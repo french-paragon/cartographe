@@ -46,5 +46,13 @@
 			
 		}
 		
+		public function drawPoint() {
+			
+		}
+		
+		public function drawPointInfos($contextSize) {
+			
+		}
+		
 	}
 ?>
