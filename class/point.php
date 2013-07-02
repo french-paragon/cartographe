@@ -2,19 +2,22 @@
     class point extends coordonnee
     {
 		/* Vars */
-		protected $modelName;
+		protected $model;
 		protected $modelParams;
 		protected $message;
 		
 		/* Constantes */
-		const DELFAUTMODELNAME = "delfaut";
+		const DELFAUTMODELNAME = "delfautPointModel";
+		const NOMODELMESSAGE = 0;
 		const USEDELFAUTMODELMESSAGE = -1;
 		const NOMODELFOUNDMESSAGE = -2;
 		
 		/*functions*/
 		
-		function __construct($cords, $pmodelName, $pmodelParams) {
+		function __construct($cords, $pModel, $pmodelParams) {
 			parent::__construct($cords);
+			
+			$this->modelParams = $pmodelParams;
 			
 			if ($conf AND isset($conf_values['rootFolder'])) { //si la configuration en chargée.
 			
@@ -26,31 +29,48 @@
 				
 			}
 			
-			if (file_exists($rootF.'points_models/'.$pmodelName)) { //si le dossier du model existe
-					
-				$this->modelName = $pmodelName; //on charge le modèle mais pas de message.
-					
-			} else if (file_exists($rootF.'points_models/'.self::DELFAUTMODELNAME)) { //sinon si un modèle par défaut existe.
+			if (is_a($pModel, 'pointModel')) {
 				
-				$this->modelName = self::DELFAUTMODELNAME; //on le charge normallement
+				$this->model = $pModel; //si le paramètre est un model on le charge sans message
+				$this->message = self::NOMODELMESSAGE;
+				
+			} else if (file_exists($rootF.'class/'.$pModel.'.php')) { //si c'est un nom qui est spécifié et si la classe du model existe
+					
+				$this->model = new $pModel(); //on charge le modèle mais pas de message.
+				$this->message = self::NOMODELMESSAGE;
+					
+			} else if (file_exists($rootF.'class/'.self::DELFAUTMODELNAME.'.php')) { //sinon si un modèle par défaut existe.
+				
+				$class = self::DELFAUTMODELNAME;
+				$this->model = new $class(); //on le charge normallement
 				$this->message = self::USEDELFAUTMODELMESSAGE;
 				
 			} else { //sinon
 				
-				$this->modelName = self::DELFAUTMODELNAME; //on donne le nom par défaut
+				$this->model = null; //sinon le point n'a pas de model
 				$this->message = self::NOMODELFOUNDMESSAGE; //et on indique que le modèle n'existe pas
 					
 			}
-			
-			$this->modelParams = $pmodelParams;
 			
 		}
 		
 		public function drawPoint() {
 			
+			if ($this->message != self::NOMODELFOUNDMESSAGE) { //si un model a bien été chargé.
+				
+				$this->model->drawPointModel($this);
+				
+			}
+			
 		}
 		
 		public function drawPointInfos($contextSize) {
+			
+			if ($this->message != self::NOMODELFOUNDMESSAGE) { //si un model a bien été chargé.
+				
+				$this->model->drawPointInfosModel($this, $contextSize);
+				
+			}
 			
 		}
 		
