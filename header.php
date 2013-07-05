@@ -8,4 +8,6 @@ spl_autoload_register(function ($class) {
 
 include('conf.php');
 
+$_SESSION['configuration'] = new config();
+
 ?>

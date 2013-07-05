@@ -13,7 +13,7 @@
 		
 		public function __construct() {
 			
-			$pref = '';
+			/*$pref = '';
 			
 			for ($i = 0; $i <= self::FOLDERMAXHEIGHT; ++$i) {
 			
@@ -31,7 +31,7 @@
 				
 				$pref += '../'; //go one folder over.
 				
-			}
+			}*/
 			
 		}
 		
@@ -47,9 +47,7 @@
 				
 			}else {
 				
-				self::$general_messages += "\n\n!no var \"".$paramName."\" define.";
-				
-				return null;	
+				throw new Exception('no var "'.$paramName.'" define in all params.');	
 				
 			}
 			
@@ -63,9 +61,7 @@
 				
 			}else {
 				
-				self::$general_messages += '\n\n!no var "'.$paramName.'" define.';
-				
-				return null;	
+				throw new Exception('no var "'.$paramName.'" define in General params.');	
 				
 			}
 		}
@@ -82,9 +78,7 @@
 				
 			}else {
 				
-				$this->user_messages += '\n\n!no var "'.$paramName.'" define.';
-				
-				return null;	
+				throw new Exception('no var "'.$paramName.'" define in User params.');
 				
 			}
 		}
