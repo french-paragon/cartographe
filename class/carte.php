@@ -130,6 +130,51 @@
 			
 		}
 		
+		/* Cette fonction sert à charger la carte en tenant compte du maximum de point chargeable en une fois et décidant s'il y a lieux d'utiliser Ajax ou non.*/
+		public function drawCardWithPointsCare() {
+			
+			if (isset($_SESSION['configuration']) AND is_a($_SESSION['configuration'], 'config')) {
+			
+				$maxN = null;
+			
+				try {
+					
+					$maxN = $_SESSION['configuration']->getParam('maxPointSize');
+					
+				} catch (Exception $e) {
+					
+					$maxN = 0;
+					
+				}
+				
+				if (count($this->pts) < $maxN) { // si le nombre de point est plus petit que le nombre de point maximal que l'on peut charger à la fois
+					
+					$this->drawCardWithPoints(); //on charge directement tout les points
+					
+				} else { //sinon on utilisera ajax pour charger les points à la demande.
+					
+					$this->drawCardWithoutPoints();
+					
+				}
+				
+			} else {
+				
+				$this->drawCardWithPoints();
+				
+			}
+			
+		}
+		
+		/* cette fonction sert à obtenir un lien vers la carte*/
+		public function drawLinkTo() {
+		
+			echo '<table>
+				<tr><td><img href="'.$this->image_fond.'"/></td><td>'.
+		$this->name.'<br><br>'.$this->description.'</td></tr>
+			</table><br><br>';
+			
+		}
+		
 		
 	}
 ?>

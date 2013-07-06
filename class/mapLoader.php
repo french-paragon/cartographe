@@ -75,7 +75,7 @@
 					
 					$response = $this->connection->query('SELECT ca.`index` , ga.`full_titre`, ca.`name` , ca.`image_fond` , ca.`deco_style`, ca.`deco_style_params` , ca.`x_size` , ca.`y_size` , ca.`is_public` , ca.`description` FROM '.$this->dbPrefix.'cartes AS ca LEFT JOIN `'.$this->dbPrefix.'jeux` AS ga ON ca.`id_jeu` = ga.`index` WHERE ca.`name` = "'.$pName.'"');
 					
-					$donnees = $reponse->fetch();
+					$donnees = $response->fetch();
 					
 					$retour = new carte($donnees['index'], $donnees['name'], $donnees['image_fond'], $donnees['deco_style'], $donnees['deco_style_params'], $donnees['x_size'], $donnees['y_size'], $donnees['description'], $donnees['is_public']);
 					
