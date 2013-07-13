@@ -41,3 +41,7 @@ Thumbs.db
 # Images and temp ressources #
 ##############################
 images/*
+.classpath
+.project
+.settings/*
+

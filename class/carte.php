@@ -169,8 +169,7 @@
 		public function drawLinkTo() {
 		
 			echo '<table>
-				<tr><td><img href="'.$this->image_fond.'"/></td><td>'.
-		$this->name.'<br><br>'.$this->description.'</td></tr>
+				<tr><td><img src="'.$this->image_fond.'" alt = "image non trouvée" width="200px" heigth="150px"/></td><td><a href="carte.php?map='.$this->name.'">'.$this->name.'</a><br><br>'.$this->description.'</td></tr>
 			</table><br><br>';
 			
 		}
