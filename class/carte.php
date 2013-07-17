@@ -59,7 +59,7 @@
 		
 		private function initSVG () {
 			
-			echo("<svg
+			$SVGcontent = "<svg
 			xmlns:dc=\"http://purl.org/dc/elements/1.1/\"
 			xmlns:cc=\"http://creativecommons.org/ns#\"
 			xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"
@@ -67,30 +67,30 @@
 			xmlns:xlink=\"http://www.w3.org/1999/xlink\"
 			xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"
 			xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"
-			width=\"");
+			width=\"";
 
-			echo($this->size->getX());
+			$SVGcontent .= $this->size->getX();
 
-			echo("\"
-			height=\"");
+			$SVGcontent .= "\"height=\"";
 
-			echo($this->size->getY());
+			$SVGcontent .= $this->size->getY();
 
-			echo("\"
-			id=\"");
+			$SVGcontent .= "\"id=\"";
 
-			echo($this->index);
+			$SVGcontent .= $this->index;
 
-			echo("\"
+			$SVGcontent .= "\"
 			version=\"1.1\"
 			inkscape:version=\"0.48.3.1 r9886\"
-			sodipodi:docname=\"dessin.svg\">");
+			sodipodi:docname=\"dessin.svg\">";
+			
+			return $SVGcontent;
 			
 		}
 		
 		private function endSVG () {
 
-			echo("</svg>");
+			return "</svg>";
 			
 		}
 		
@@ -102,31 +102,42 @@
 			//puis on la protège
 			$SVGcontent .= '<foreignobject x="0" y="0" width="'.$this->size->getX().'" height="'.$this->size->getY().'"><body xmlns=\"http://www.w3.org/1999/xhtml\"><div></div></body></foreignobject>';
 
-			echo $SVGcontent;
+			return $SVGcontent;
 			
 		}
 		
 		public function drawCardWithoutPoints () {
 			
-			$this->initSVG();
-			$this->beginCardDraw();
-			$this->endSVG();
+			$page->addToHead('<script> useAjax = false; </script>');
+			$page->addToHead('<script type="text/javascript" src="js/carte.js"></script>');
+			
+			$page = new pageBuilder();
+			
+			$page->addToBody($this->initSVG());
+			$page->addToBody($this->beginCardDraw());
+			$page->addToBody($this->endSVG());
+		
+			$page->drawPage();
 			
 		}
 		
 		public function drawCardWithPoints () {
 			
-			$this->initSVG();
-			$this->beginCardDraw();
+			$page->addToHead('<script> useAjax = false; </script>');
+			$page->addToHead('<script type="text/javascript" src="js/carte.js"></script>');
+			
+			$page = $this->beginCardDraw();
 			
 			foreach($this->pts as $pt) {
 			
-				$pt->drawPoint();
-				$pt->drawPointInfos($this->size);
+				$page->addToBody($pt->drawPoint());
+				$page->addToBody($pt->drawPointInfos($this->size));
 				
 			}
 			
-			$this->endSVG();
+			$page->addToBody($this->endSVG());
+		
+			$page->drawPage();
 			
 		}
 		
