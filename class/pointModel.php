@@ -6,9 +6,30 @@
 			
 		}
 	
-		abstract protected function drawPointModel ($pPoint);
+		abstract protected function drawPointModel (&$pPoint);
 		
-		abstract protected function drawPointInfosModel ($pPoint, $contextSize);
+		abstract protected function drawPointInfosModel (&$pPoint, $contextSize);
+
+		protected function initParamList (&$pPoint) {
+
+			$params = $pPoint->getModelParam();
+
+			if (is_string($params)) {
+
+				$params = explode($params, ',');
+				$pPoint->setModelParam($params);
+
+			}
+
+			if (!is_array($params)) {
+
+				$params = self::DELFAULTPARAMS;
+				$pPoint->setModelParam($params);
+
+			}
+
+			return $params;
+		}
 		
 	}
 

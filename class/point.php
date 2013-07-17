@@ -2,8 +2,9 @@
     class point extends coordonnee
     {
 		/* Vars */
+		protected $id;
 		protected $model;
-		protected $modelParams;
+		protected $modelParams; //stocké sous forme de string ou de tableau
 		protected $message;
 		
 		/* Constantes */
@@ -58,7 +59,7 @@
 			
 			if ($this->message != self::NOMODELFOUNDMESSAGE) { //si un model a bien été chargé.
 				
-				$this->model->drawPointModel($this);
+				return $this->model->drawPointModel($this);
 				
 			}
 			
@@ -68,10 +69,40 @@
 			
 			if ($this->message != self::NOMODELFOUNDMESSAGE) { //si un model a bien été chargé.
 				
-				$this->model->drawPointInfosModel($this, $contextSize);
+				return $this->model->drawPointInfosModel($this, $contextSize);
 				
 			}
 			
+		}
+
+		public function setID ($pID) {
+
+			$this->id = $pID;
+
+		}
+
+		public function getID () {
+
+			return $this->id;
+
+		}
+
+		public function getInfoID () {
+
+			return $this->id.'infos';
+
+		}
+
+		public function getModelParam(){
+
+			return $this->modelParams;
+
+		}
+
+		public function setModelParam($pModelPamams){
+
+			$this->modelParams = $pModelPamams;
+
 		}
 		
 	}

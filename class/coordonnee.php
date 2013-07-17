@@ -47,7 +47,28 @@
 			  
 			  $this->y = $py;
 			  
-			  } 
+			  }
+
+	public function getDiff (coordonnee $pCord){
+
+		$dx = $this->x - $pCord->getX();
+		$dy = $this->y - $pCord->getY();
+
+		return new coordonnee($dx.','.$dy);
+
+	} 
+
+	public function getXMLPos() {
+		return 'x="'.$this->x.'" y="'.$this->y.'"';
+	}
+
+	public function getXMLSize() {
+		return 'width="'.$this->x.'" height="'.$this->y.'"';
+	}
+
+	public function __toString() {
+		return $this->x.','.$this->y;
+	}
 		 
 	 }
 ?>
