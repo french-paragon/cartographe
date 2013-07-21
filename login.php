@@ -58,8 +58,8 @@
 		
 		if (!$_SESSION["log"]->isUserRegistred()) { //si l'utilisateur n'est pas reconnu
 			$executeConnect = false;
-			$msg .= "Votre nom d'utilisateur n'est pas reconnu, prière de recommencer.<br><br> "; //mais si un champs manque alors on refuse le logon.
-		} elseif ($_SESSION["log"]->isUserRegistred() AND !$_SESSION["log"]->isUserIdentyfied()){ //si l'utilisateur est enregistré mais que le mot de passe ne corresponds pas.
+			$msg .= 'Votre nom d\'utilisateur n\'est pas reconnu, prière de recommencer.<br><br> '; //mais si un champs manque alors on refuse le logon.
+		} elseif (!$_SESSION["log"]->isUserIdentyfied()){ //si l'utilisateur est enregistré mais que le mot de passe ne corresponds pas.
 			$executeConnect = false;
 			$msg .= "Votre mot de passe ne semble pas correct!<br><br> ";
 		}

@@ -12,7 +12,7 @@
 		protected $user_mail;
 		protected $user_maps;
 		protected $user_psw;
-		protected $IsPSWEncrypted = false;
+		protected $IsPSWEncrypted;
 		
 		public function __construct($pI, $pUN, $pR, $pML, $pMP, $pPSW, $EctPSW = false){
 		

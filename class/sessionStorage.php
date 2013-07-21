@@ -8,7 +8,7 @@ class sessionStorage implements Serializable
 	protected $user;
 	protected $getPSW;
 	
-	private $tryC;
+	private $tryC = 0;
 	
 	protected $ul;
 
@@ -49,6 +49,7 @@ class sessionStorage implements Serializable
 	public function reInitUserDatas($pUserName, $pPSW) {
 		
 		$addTry = false;
+		
 		$pas = sha1($pPSW);
 		
 		if($this->getPSW != $pas) {
@@ -56,7 +57,10 @@ class sessionStorage implements Serializable
 			$addTry = true;
 		}
 		
-		if($this->user->getName() != $pUserName) {
+		if (!is_a($this->user, 'user')){
+			$this->user = $this->ul->getUser($pUserName);
+			$addTry = true;
+		}elseif($this->user->getName() != $pUserName) {
 			$this->user = $this->ul->getUser($pUserName);
 			$addTry = true;
 		}
@@ -68,7 +72,13 @@ class sessionStorage implements Serializable
 	}
 	
 	public function hasTooMuchLog() {
-		return $this->tryC > self::MAXLOGTRY;
+		
+		//if ($this->tryC > self::MAXLOGTRY) {
+			//return true;
+		//}else {
+			return false;
+		//}
+		
 	}
 	
 	private function addTry() {
@@ -93,11 +103,16 @@ class sessionStorage implements Serializable
 	
 	public function isUserIdentyfied(){
 	
-		if (is_a($this->user, 'user') && $this->tryC <= self::MAXLOGTRY) {
+		if (is_a($this->user, 'user') /*&& $this->tryC <= self::MAXLOGTRY*/) {
 			
-			$this->tryC = 0;
-			
-			return ($this->user->getPSW() == $this->getPSW);
+			if($this->user->getPSW() == $this->getPSW) {
+				
+				$this->tryC = 0;
+				return true;
+				
+			}else {
+				return false;
+			}
 			
 		} else {
 			return false;
