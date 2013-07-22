@@ -1,3 +1,6 @@
+<?php
+	include('header.php'); 
+?>
 <html>
 <head>
 
@@ -10,10 +13,8 @@
 
 <body>
 <?php 
-
-	include('header.php');
 	
-	$executeConnect = false; //cette variable sert à définir si on va connecter l'utilisateur ou le présenter le formulaire avec un message.
+	$executeConnect = true; //cette variable sert à définir si on va connecter l'utilisateur ou le présenter le formulaire avec un message.
 	$msg = '<br>';
 	
 	$ul = new userLoader($conf_values['dbName'], $conf_values['dbHost'], $conf_values['dbUser'], $conf_values['dbPsw'], $conf_values['dbPrefix']);

@@ -129,7 +129,7 @@ class sessionStorage implements Serializable
 		
 	public function getSessionOpenMessage(){ //renvoie le code html à afficher à l'ouverture de session
 		
-		return 'Vous êtes loggué! <a href="test.php">test.php</a>';
+		return 'Vous êtes loggué!';
 		
 	}
 	

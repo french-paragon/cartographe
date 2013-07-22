@@ -8,6 +8,7 @@
 <!--<script src="cryptMD5.js" type="text/javascript"><!--mce:1</script>-->
 
 <meta charset="UTF-8" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 
 </head>
 
@@ -19,13 +20,15 @@
 			
 			if ($_SESSION["log"]->isUserIdentyfied()) {
 			
-				echo 'révise ton script!';
+				echo 'un problème est survenu, veuillez réessayer et si le problème persite contacter l\'administrateur du site.';
 				
+			} else {
+				echo 'votre session a été fermée!';
 			}
 			
+	} else {
+		echo 'votre session a été fermée!';
 	}
-	
-	echo 'votre session a été fermée!';
 	
 ?>
 </body>
