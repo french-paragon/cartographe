@@ -15,8 +15,11 @@
 					
 					$donnees = $response->fetchAll();
 					
-					return new user($donnees[0]['index'], $donnees[0]['user_name'], $donnees[0]['user_right'], $donnees[0]['user_mail'], $donnees[0]['userMaps'], $donnees[0]['user_psw'], true);
-						
+					if (isset($donnees[0])) {
+						return new user($donnees[0]['index'], $donnees[0]['user_name'], $donnees[0]['user_right'], $donnees[0]['user_mail'], $donnees[0]['userMaps'], $donnees[0]['user_psw'], true);
+					} else {
+						return null;
+					}
 					
 				}catch (PDOException $e){
 					

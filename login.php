@@ -1,7 +1,10 @@
+<html>
 <head>
 
 <!--<script src="mesFonctions.js" type="text/javascript"><!--mce:0 onclick="loginValidation(document.getElementById('password'), document.getElementById('md5'), document.Connexion);"</script>-->
 <!--<script src="cryptMD5.js" type="text/javascript"><!--mce:1</script>-->
+
+<meta charset="UTF-8" />
 
 </head>
 
@@ -78,7 +81,7 @@
 	echo $msg;
 ?>
 <br><br>
-<form action="login.php" method="post">
+<form action="login.php" method="post" accept-charset="UTF-8">
 
 	<label for="login"><strong>Nom d'utilisateur :</strong></label>
 	<input maxlength="40" id="login" name="login" type="text" /><br><br>
@@ -96,9 +99,10 @@
 
 	else { //sinon
 	
-		echo '<br>'.$_SESSION["log"]->getSessionOpenMessage().'<br>'; //on renvoie son message d'accueil à l'utilisateur.
+		echo '<br>'.$_SESSION["log"]->getSessionOpenMessage().'<br><br><br>'; //on renvoie son message d'accueil à l'utilisateur.
 	
 	}
 
 ?>
 </body>
+</html>

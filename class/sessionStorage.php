@@ -15,7 +15,7 @@ class sessionStorage implements Serializable
 	public function __construct($pUserName, $pPSW, userLoader &$pUL){
 		
 		$this->ul = $pUL;
-		$this->getPSW = sha1($pPSW);
+		$this->getPSW = crypt($pPSW, '$2a$07'.md5($pPSW).'$');
 		$this->user = $this->ul->getUser($pUserName);
 		
 	}
@@ -50,7 +50,7 @@ class sessionStorage implements Serializable
 		
 		$addTry = false;
 		
-		$pas = sha1($pPSW);
+		$pas = crypt($pPSW, '$2a$07'.md5($pPSW).'$');
 		
 		if($this->getPSW != $pas) {
 			$this->getPSW = $pas;
@@ -73,11 +73,11 @@ class sessionStorage implements Serializable
 	
 	public function hasTooMuchLog() {
 		
-		//if ($this->tryC > self::MAXLOGTRY) {
-			//return true;
-		//}else {
+		if ($this->tryC > self::MAXLOGTRY) {
+			return true;
+		}else {
 			return false;
-		//}
+		}
 		
 	}
 	
@@ -103,9 +103,9 @@ class sessionStorage implements Serializable
 	
 	public function isUserIdentyfied(){
 	
-		if (is_a($this->user, 'user') /*&& $this->tryC <= self::MAXLOGTRY*/) {
+		if (is_a($this->user, 'user') && $this->tryC <= self::MAXLOGTRY) {
 			
-			if($this->user->getPSW() == $this->getPSW) {
+			if($this->user->getPSW() === $this->getPSW) {
 				
 				$this->tryC = 0;
 				return true;
@@ -122,7 +122,7 @@ class sessionStorage implements Serializable
 		
 	public function getSessionOpenMessage(){ //renvoie le code html à afficher à l'ouverture de session
 		
-		return 'Vous êtes loggué!';
+		return 'Vous êtes loggué! <a href="test.php">test.php</a>';
 		
 	}
 	

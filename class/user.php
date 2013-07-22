@@ -29,7 +29,7 @@
 		public function encryptPSW() {
 		
 			if(!$this->IsPSWEncrypted){
-				$this->user_psw = sha1($this->user_psw);
+				$this->user_psw = crypt($this->user_psw, '$2a$07'.md5($this->user_psw).'$');
 				$this->IsPSWEncrypted = true;
 			}
 			
