@@ -71,6 +71,13 @@ class sessionStorage implements Serializable
 		
 	}
 	
+	public function logout() {
+		
+		$this->user = null;
+		$this->getPSW = null;
+		
+	}
+	
 	public function hasTooMuchLog() {
 		
 		if ($this->tryC > self::MAXLOGTRY) {
