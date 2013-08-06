@@ -38,4 +38,3 @@ SELECT pt.`index` , pt.`model` , pt.`model_params` , pt.`media_id` , pt.`media_t
 FROM cartes AS ca
 LEFT JOIN `test`.`points` AS pt ON ca.`index` = pt.`id_carte`
 WHERE ca.`name` = "Chez Gusteau"
-

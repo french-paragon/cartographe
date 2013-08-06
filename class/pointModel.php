@@ -16,14 +16,12 @@
 
 			if (is_string($params)) {
 
-				$params = explode($params, ',');
+				$params = explode(',', $params);
 				$pPoint->setModelParam($params);
 
-			}
+			} elseif (!is_array($params)) {
 
-			if (!is_array($params)) {
-
-				$params = self::DELFAULTPARAMS;
+				$params = explode(',', self::DELFAULTPARAMS);
 				$pPoint->setModelParam($params);
 
 			}

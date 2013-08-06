@@ -62,8 +62,16 @@
 		return 'x="'.$this->x.'" y="'.$this->y.'"';
 	}
 
+	public function getXMLPosWD($pD) {
+		return 'x="'.($this->x + $pD).'" y="'.($this->y + $pD).'"';
+	}
+
 	public function getXMLSize() {
 		return 'width="'.$this->x.'" height="'.$this->y.'"';
+	}
+
+	public function getXMLSizeWD($pD) {
+		return 'width="'.($this->x + $pD).'" height="'.($this->y + $pD).'"';
 	}
 
 	public function __toString() {

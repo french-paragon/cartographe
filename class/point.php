@@ -15,12 +15,13 @@
 		
 		/*functions*/
 		
-		function __construct($cords, $pModel, $pmodelParams) {
+		function __construct($cords, $pModel, $pmodelParams, $pId) {
 			parent::__construct($cords);
 			
 			$this->modelParams = $pmodelParams;
+			$this->id = $pId;
 			
-			if ($conf AND isset($conf_values['rootFolder'])) { //si la configuration en chargée.
+			if (isset($conf_values['rootFolder'])) { //si la configuration en chargée.
 			
 				$rootF = $conf_values['rootFolder']; 
 				

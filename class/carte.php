@@ -10,7 +10,7 @@
 		protected $description;
 		protected $message;
 		protected $isPublic;
-		protected $pts;
+		protected $pts = array();
 		
 		const DELFAUTBACKGROUNDID = "fondCarte";
 		 
@@ -34,11 +34,13 @@
 		public function setPoints($pPts) {
 			
 			$this->pts = array();
+			$i = 0;
 			
 			foreach($pPts as $pt) {
 				if(is_a($pt, 'point')) {
 					
-					$this->pts[] = $pt;
+					$this->pts[$i] = $pt;
+					++$i;
 					
 				}
 			}
@@ -108,13 +110,20 @@
 		
 		public function drawCardWithoutPoints () {
 			
-			$page->addToHead('<script> useAjax = false; </script>');
-			$page->addToHead('<script type="text/javascript" src="js/carte.js"></script>');
-			
 			$page = new pageBuilder();
+			
+			$page->addToHead('<script> useAjax = true; </script>');
+			$page->addToHead('<script type="text/javascript" src="js/carte.js"></script>');
 			
 			$page->addToBody($this->initSVG());
 			$page->addToBody($this->beginCardDraw());
+			
+			foreach($this->pts as $pt) {
+			
+				$page->addToBody($pt->drawPoint());
+				
+			}
+				
 			$page->addToBody($this->endSVG());
 		
 			$page->drawPage();
@@ -123,10 +132,13 @@
 		
 		public function drawCardWithPoints () {
 			
+			$page = new pageBuilder();
+			
 			$page->addToHead('<script> useAjax = false; </script>');
 			$page->addToHead('<script type="text/javascript" src="js/carte.js"></script>');
 			
-			$page = $this->beginCardDraw();
+			$page->addToBody($this->initSVG());
+			$page->addToBody($this->beginCardDraw());
 			
 			foreach($this->pts as $pt) {
 			

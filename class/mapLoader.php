@@ -55,12 +55,52 @@
 					
 				}
 				
+				$pts = $this->getMapPoints($pID);
+				$retour->setPoints($pts);
+				
 				return $retour;
 				
 			}
 			
 			else {
 				return false;
+			}
+			
+		}
+		
+		public function getMapPoints($pId){
+			
+			if ($this->isPDOConnected()) {
+				
+				$retour = null;
+				
+				try {
+				
+					$retour = array();
+					$i = 0;
+					
+					$response = $this->connection->query('SELECT * FROM `points` WHERE `id_carte` = '.$pId);
+					
+					$donnees;
+					
+					while($donnees = $response->fetch()){
+					
+						$retour[$i] = new point($donnees['x_pos'].','.$donnees['y_pos'],  $donnees['model'] , $donnees['model_params'], $donnees['index']);
+						
+					}
+					
+					return $retour;
+					
+				}catch (PDOException $e){
+					
+					return null;
+					
+				}
+				
+			} else {
+			
+				return null;
+				
 			}
 			
 		}
@@ -84,6 +124,9 @@
 					return false;
 					
 				}
+				
+				$pts = $this->getMapPoints($donnees['index']);
+				$retour->setPoints($pts);
 				
 				return $retour;
 				
