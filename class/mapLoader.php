@@ -86,6 +86,7 @@
 					while($donnees = $response->fetch()){
 					
 						$retour[$i] = new point($donnees['x_pos'].','.$donnees['y_pos'],  $donnees['model'] , $donnees['model_params'], $donnees['index']);
+						$i++;
 						
 					}
 					
