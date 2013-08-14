@@ -126,6 +126,24 @@ class sessionStorage implements Serializable
 		}
 		
 	}
+	
+	public function hasUserAdminRights(){
+	
+		if ($this->isUserIdentyfied()) {
+			
+			if($this->user->getRigth() > user::VISITORRIGHTS) {
+				
+				return true;
+				
+			}else {
+				return false;
+			}
+			
+		} else {
+			return false;
+		}
+		
+	}
 		
 	public function getSessionOpenMessage(){ //renvoie le code html à afficher à l'ouverture de session
 		

@@ -5,10 +5,14 @@
 		function __construct () {
 			
 		}
+		
+		abstract protected function drawEditor();
 	
 		abstract protected function drawPointModel (&$pPoint);
 		
 		abstract protected function drawPointInfosModel (&$pPoint, $contextSize);
+		
+		abstract protected function drawPointEditableModel(&$pPoint, $contextSize);
 
 		protected function initParamList (&$pPoint) {
 

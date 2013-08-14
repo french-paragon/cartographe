@@ -7,6 +7,9 @@
 		protected $modelParams; //stocké sous forme de string ou de tableau
 		protected $message;
 		
+		protected $width;
+		protected $heigth;
+		
 		/* Constantes */
 		const DELFAUTMODELNAME = "delfautPointModel";
 		const NOMODELMESSAGE = 0;
@@ -75,6 +78,16 @@
 			}
 			
 		}
+		
+		public function drawPointEditable(){
+			
+			if ($this->message != self::NOMODELFOUNDMESSAGE) { //si un model a bien été chargé.
+				
+				return $this->model->drawPointEditableModel($this, $contextSize);
+				
+			}
+			
+		}
 
 		public function setID ($pID) {
 
@@ -104,6 +117,22 @@
 
 			$this->modelParams = $pModelPamams;
 
+		}
+		
+		public function getWidth() {
+			return $this->width;
+		}
+		
+		public function setWidth($pW){
+			$this->width = $pW;
+		}
+		
+		public function getHeigth() {
+			return $this->heigth;
+		}
+		
+		public function setHeigth($pH){
+			$this->heigth = $pH;
 		}
 		
 	}

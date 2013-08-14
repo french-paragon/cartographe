@@ -37,6 +37,32 @@
 			
 		}
 		
+		public function getUsers(){
+		
+			if ($this->isPDOConnected()) {
+				
+				$retour = null;
+				
+				try{
+					
+					$response = $this->connection->query('SELECT * FROM `users`');
+					
+					while ($donnees = $response->fetch()) {
+						$retour[$donnees['index']] = new user($donnees['index'], $donnees['user_name'], $donnees['user_right'], $donnees['user_mail'], $donnees['userMaps'],  $donnees['user_psw'], true);
+					}
+					
+					return $retour;
+					
+				}catch(PDOException $e){
+					return false;
+				}
+				
+			} else {
+				return false;
+			}
+			
+		}
+		
 	
 	}
 

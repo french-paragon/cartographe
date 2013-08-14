@@ -197,6 +197,38 @@
 			
 		}
 		
+		public function drawEditLinkTo(){
+		
+			echo '<table>
+				<tr><td><img src="'.$this->image_fond.'" alt = "image non trouvée" width="200px" heigth="150px"/></td><td><a href="carte.php?map='.$this->name.'" target="_blank">'.$this->name.'</a><br><br>'.
+				'<div class="editlinks"><a href="mapEditor.php?map='.$this->name.'" target="_blank">editor</a> | <a onclick="delete("'.$this->name.'");" href="">delete</a></div></td></tr>
+			</table><br><br>';
+			
+		}
+		
+		public function drawCardEditable(){
+			
+			$page = new pageBuilder();
+			
+			$page->addToHead('<script> useAjax = false; </script>');
+			$page->addToHead('<script type="text/javascript" src="js/carte.js"></script>');
+			$page->addToHead('<script type="text/javascript" src="js/carteEdit.js"></script>');
+			
+			$page->addToBody($this->initSVG());
+			$page->addToBody($this->beginCardDraw());
+			
+			foreach($this->pts as $pt) {
+			
+				$page->addToBody($pt->drawPointEditable());
+				
+			}
+			
+			$page->addToBody($this->endSVG());
+		
+			$page->drawPage();
+			
+		}
+		
 		
 	}
 ?>

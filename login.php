@@ -8,6 +8,7 @@
 <!--<script src="cryptMD5.js" type="text/javascript"><!--mce:1</script>-->
 
 <meta charset="UTF-8" />
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 
 </head>
 
@@ -58,7 +59,7 @@
 		
 	}
 			
-	if($executeConnect)	{ //si on doit vérifier que l'utilisateur est bien loggué.
+	if($executeConnect AND isset($_SESSION["log"]))	{ //si on doit vérifier que l'utilisateur est bien loggué.
 		
 		if (!$_SESSION["log"]->isUserRegistred()) { //si l'utilisateur n'est pas reconnu
 			$executeConnect = false;
@@ -70,10 +71,12 @@
 					
 		if ($_SESSION["log"]->hasTooMuchLog()) {
 			$executeConnect = false;
-			$msg .= "Vous ne pouvez tentez de vous logguer que ".sessionStorage::MAXLOGTRY."fois par heure, revenez dans une heure!\n
+			$msg .= "Vous ne pouvez tentez de vous logguer que ".sessionStorage::MAXLOGTRY." fois par heure, revenez dans une heure!\n
 			 Ceci sert à protéger le site contre les attaque par force brute.<br><br> ";
 		}
 		
+	} else{
+		$executeConnect = false;
 	}
 	
 		

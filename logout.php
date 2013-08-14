@@ -15,7 +15,7 @@
 <body>
 <?php
 
-	if (isset($_SESSION["log"]) AND $_SESSION["log"]->isUserIdentyfied()){ //si l'utilisateur est enregistré mais que le mot de passe ne corresponds pas.
+	if (isset($_SESSION["log"]) AND $_SESSION["log"]->isUserIdentyfied()){ //si l'utilisateur est enregistré
 			$_SESSION["log"]->logout();
 			
 			if ($_SESSION["log"]->isUserIdentyfied()) {
@@ -23,10 +23,14 @@
 				echo 'un problème est survenu, veuillez réessayer et si le problème persite contacter l\'administrateur du site.';
 				
 			} else {
+				
+				session_destroy();
 				echo 'votre session a été fermée!';
 			}
 			
 	} else {
+				
+		session_destroy();
 		echo 'votre session a été fermée!';
 	}
 	

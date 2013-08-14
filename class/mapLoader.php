@@ -86,6 +86,8 @@
 					while($donnees = $response->fetch()){
 					
 						$retour[$i] = new point($donnees['x_pos'].','.$donnees['y_pos'],  $donnees['model'] , $donnees['model_params'], $donnees['index']);
+						$retour[$i]->setWidth(intval($donnees['x_size']));
+						$retour[$i]->setHeigth(intval($donnees['y_size']));
 						$i++;
 						
 					}
