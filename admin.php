@@ -1,6 +1,6 @@
 <?php 
 
-	include('header.php');
+	require_once 'header.php';
 	
 	if(isset($_SESSION["log"])) {// si l'utilisateur est identifié.
 		if($_SESSION["log"]->hasUserAdminRights()) {
@@ -25,7 +25,7 @@
 			
 			<td id="menus" ><br><br><br><br>
 				<a href="admin.php?tool=maps"><p class="menu" id="maps">Cartes</p></a>
-				<a href="admin.php?tool=points"><p class="menu" id="points">Points</p></a>
+				<!--<a href="admin.php?tool=points"><p class="menu" id="points">Points</p></a>-->
 				<a href="admin.php?tool=medias"><p class="menu" id="medias">Stock Media</p></a>
 				<a href="admin.php?tool=users"><p class="menu" id="users">Utilisateurs</p></a>
 			</td>
@@ -36,7 +36,7 @@
 			
 			<td id ="content" ><?php 
 			
-				if(isset($_GET['tool']) AND preg_match("#^maps$|^points$|^medias$|^users$#", $_GET['tool'])){
+				if(isset($_GET['tool']) AND preg_match("#^maps$|^medias$|^users$#", $_GET['tool'])){
 				
 					include('admin/'.$_GET['tool'].'.php');
 					

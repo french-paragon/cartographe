@@ -13,7 +13,7 @@
 			
 			if (is_a($map, 'carte')) { //si aucune erreur est survenue on peut charger la carte
 				
-				$map->drawCardEditable();
+				echo $map->drawCardInfosEditable();
 				
 			} else {
 			

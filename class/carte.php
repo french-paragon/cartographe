@@ -143,6 +143,11 @@
 			foreach($this->pts as $pt) {
 			
 				$page->addToBody($pt->drawPoint());
+				
+			}
+			
+			foreach($this->pts as $pt) {
+			
 				$page->addToBody($pt->drawPointInfos($this->size));
 				
 			}
@@ -201,7 +206,7 @@
 		
 			echo '<table>
 				<tr><td><img src="'.$this->image_fond.'" alt = "image non trouvée" width="200px" heigth="150px"/></td><td><a href="carte.php?map='.$this->name.'" target="_blank">'.$this->name.'</a><br><br>'.
-				'<div class="editlinks"><a href="mapEditor.php?map='.$this->name.'" target="_blank">editor</a> | <a onclick="delete("'.$this->name.'");" href="">delete</a></div></td></tr>
+				'<div class="editlinks"><a href="admin.php?tool=maps&map='.$this->index.'">Infos</a> | <a href="mapEditor.php?map='.$this->index.'" target="_blank">editor</a> | <a onclick="delete("'.$this->name.'");" href="">delete</a></div></td></tr>
 			</table><br><br>';
 			
 		}
@@ -226,6 +231,12 @@
 			$page->addToBody($this->endSVG());
 		
 			$page->drawPage();
+			
+		}
+		
+		public function drawCardInfosEditable(){
+			
+			return "\n";
 			
 		}
 		
