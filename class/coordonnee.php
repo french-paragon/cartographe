@@ -8,7 +8,7 @@
 		 public function __construct($dats)
           {
 			  
-			  if (preg_match("#^\d+.?\d*,\d+.?\d*$#", $dats)) {
+			  if (preg_match("#^-?\d+.?\d*,-?\d+.?\d*$#", $dats)) {
 			  
 				$datas = explode(",", $dats);
 			  

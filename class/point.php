@@ -124,7 +124,7 @@
 		}
 		
 		public function setWidth($pW){
-			$this->width = $pW;
+			$this->width = floatval($pW);
 		}
 		
 		public function getHeigth() {
@@ -132,7 +132,11 @@
 		}
 		
 		public function setHeigth($pH){
-			$this->heigth = $pH;
+			$this->heigth = floatval($pH);
+		}
+		
+		public function getXMLSize() {
+			return 'width="'.$this->width.'" height="'.$this->heigth.'"';
 		}
 		
 	}
