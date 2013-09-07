@@ -52,7 +52,6 @@
 				try {
 					$this->connection = new PDO('mysql:host='.$this->dbHost.';dbname='.$this->dbName, $this->dbUser, $this->dbPsw);
 				} catch (PDOException $e) {
-					echo "Erreur !: " . $e->getMessage() . "<br/>";
 					return false;
 				}
 				

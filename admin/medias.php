@@ -19,10 +19,10 @@
 
 	<tr><td><a class=\"pageName\" href=\"".$pMediaURL."\">";
 
-	echo $pName;
+	echo $pName."";
 
 	echo "</a></td></tr>
-	<tr class = \"pageUse\"><td></td></tr>
+	<tr class = \"pageUse\"><td><br>".$pMediaURL."</td></tr>
 
 	</table></td>
 	</tr>
