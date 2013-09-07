@@ -1,6 +1,38 @@
 <?php 
 
 	class mapLoader extends db {
+		
+		public function getGameNameList() {
+		
+			if( $this->isPDOConnected() ){
+				
+				$retour = array();
+				
+				try {
+				
+					$response = $this->connection->query('SELECT `full_titre` FROM `jeux` ORDER BY `full_titre`');
+					
+					$i = 0;
+					
+					while ($donnees = $response->fetch()) {
+							
+						$retour[$i] = $donnees['full_titre'];
+						$i++;
+						
+					}
+					
+				}catch (PDOException $e){
+					
+					return false;
+					
+				}
+				
+				return $retour;
+				
+			}else
+				return null;
+			
+		}
 	
 		public function getMapsList() {
 			
@@ -15,7 +47,7 @@
 
 					while ($donnees = $response->fetch()) {
 						
-						$retour[$donnees['full_titre']][$donnees['index']] = new carte($donnees['index'], $donnees['name'], $donnees['image_fond'], $donnees['deco_style'], $donnees['deco_style_params'], $donnees['x_size'], $donnees['y_size'], $donnees['description'], $donnees['is_public']);
+						$retour[$donnees['full_titre']][$donnees['index']] = new carte($donnees['index'], $donnees['name'], $donnees['image_fond'], $donnees['deco_style'], $donnees['deco_style_params'], $donnees['x_size'], $donnees['y_size'], $donnees['description'], $donnees['is_public'], $donnees['full_titre']);
 						
 					}
 					
@@ -47,7 +79,7 @@
 					
 					$donnees = $response->fetch();
 					
-					$retour = new carte($donnees['index'], $donnees['name'], $donnees['image_fond'], $donnees['deco_style'], $donnees['deco_style_params'], $donnees['x_size'], $donnees['y_size'], $donnees['description'], $donnees['is_public']);
+					$retour = new carte($donnees['index'], $donnees['name'], $donnees['image_fond'], $donnees['deco_style'], $donnees['deco_style_params'], $donnees['x_size'], $donnees['y_size'], $donnees['description'], $donnees['is_public'], $donnees['full_titre']);
 					
 				}catch (PDOException $e){
 					
@@ -88,6 +120,7 @@
 						$retour[$i] = new point($donnees['x_pos'].','.$donnees['y_pos'],  $donnees['model'] , $donnees['model_params'], $donnees['index']);
 						$retour[$i]->setWidth(intval($donnees['x_size']));
 						$retour[$i]->setHeigth(intval($donnees['y_size']));
+						$retour[$i]->setDescription($donnees['description']);
 						$i++;
 						
 					}
@@ -120,7 +153,7 @@
 					
 					$donnees = $response->fetch();
 					
-					$retour = new carte($donnees['index'], $donnees['name'], $donnees['image_fond'], $donnees['deco_style'], $donnees['deco_style_params'], $donnees['x_size'], $donnees['y_size'], $donnees['description'], $donnees['is_public']);
+					$retour = new carte($donnees['index'], $donnees['name'], $donnees['image_fond'], $donnees['deco_style'], $donnees['deco_style_params'], $donnees['x_size'], $donnees['y_size'], $donnees['description'], $donnees['is_public'], $donnees['full_titre']);
 					
 				}catch (PDOException $e){
 					
@@ -141,6 +174,133 @@
 			
 		}
 		
+		public function updateMap(carte &$pMap){
+		
+			if( $this->isPDOConnected() ){
+				
+				$iPub = ($pMap->isPublic()) ? 1 : 0 ;
+				
+				try {
+					
+					$req = $this->connection->prepare("SELECT `index` FROM `".$this->dbPrefix."jeux` WHERE `full_titre` = :gName LIMIT 1");
+					
+					$req->execute([':gName' => $pMap->getGameName()]);
+					
+					if($req->rowCount() == 0){
+					
+						$req = $this->connection->prepare("INSERT INTO `".$this->dbPrefix."jeux`
+						(`full_titre`) VALUES (:gName)");
+						$req->execute([':gName' => $pMap->getGameName()]);
+						
+					}
+					
+					$req = $this->connection->prepare("UPDATE `".$this->dbPrefix."cartes` SET `name` = :name,
+					`id_jeu` = (SELECT `index` FROM `".$this->dbPrefix."jeux` WHERE `full_titre` = :gName LIMIT 1),
+					`image_fond` = :imageF,
+					`deco_style` = :decoS,
+					`deco_style_params` = :decoSP,
+					`x_size` = :xS,
+					`y_size` = :yS,
+					`is_public` = :iP,
+					`description` = :descr 
+					
+					WHERE `".$this->dbPrefix."cartes`.`index` = :id;");
+					
+					$req->execute([ 
+					
+					':name' => $pMap->getName(),
+					':gName' => $pMap->getGameName(),
+					':imageF' => $pMap->getImageFond(),
+					':decoS' => $pMap->getDecoStyle(),
+					':decoSP' => $pMap->getDecoStyleParams(),
+					':xS' => $pMap->getXsize(),
+					':yS' => $pMap->getYsize(),
+					':iP' => $iPub,
+					':descr' => $pMap->getDescription(),
+					':id' => $pMap->getId()
+					 
+					]);
+					
+					if($req->rowCount() > 0)
+						return true;
+					else
+						return false;
+					
+				}catch (PDOException $e){
+					return false;
+				}
+				
+			}
+			
+			return false;
+			
+		}
+		
+		public function registerMap(carte &$pMap){
+		
+			if( $this->isPDOConnected() ){
+				
+				$iPub = ($pMap->isPublic()) ? 1 : 0 ;
+		
+				try {
+					
+					$req = $this->connection->prepare("INSERT INTO `".$this->dbPrefix."cartes` 
+					(`id_jeu`, `name`, `image_fond`, `deco_style`, `deco_style_params`, `x_size`, `y_size`, `is_public`, `description`) 
+					VALUES 
+					(1, :name, :imageF, :decoS, :decoSP, :xS, :yS, :iP, :descr);");
+					
+					$req->execute([ 
+					
+					':name' => $pMap->getName(),
+					':imageF' => $pMap->getImageFond(),
+					':decoS' => $pMap->getDecoStyle(),
+					':decoSP' => $pMap->getDecoStyleParams(),
+					':xS' => $pMap->getXsize(),
+					':yS' => $pMap->getYsize(),
+					':iP' => $iPub,
+					':descr' => $pMap->getDescription()
+					 
+					]);
+					
+					$req = $this->connection->query('SELECT LAST_INSERT_ID();');
+					
+					$ret = $req->fetch();
+					
+					$pMap = $this->getMapWithID($ret['LAST_INSERT_ID()']);
+					
+					return true;
+					
+				}catch (PDOException $e){
+					return false;
+				}
+			}
+		}
+	
+		public function deleteIndex($index){
+		
+			if( $this->isPDOConnected() ){
+		
+				try {
+					
+					$req = $this->connection->prepare("DELETE FROM `".$this->dbPrefix."cartes` WHERE `index` = :index");
+					
+					$req->execute([ 
+					
+					':index' => $index
+					 
+					]);
+					
+					if($req->rowCount() > 0)
+						return true;
+					else
+						return false;
+					
+				}catch (PDOException $e){
+					return false;
+				}
+			}
+			
+		}
 	
 	}
 

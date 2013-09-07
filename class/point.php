@@ -7,6 +7,8 @@
 		protected $modelParams; //stocké sous forme de string ou de tableau
 		protected $message;
 		
+		protected $description;
+		
 		protected $width;
 		protected $heigth;
 		
@@ -15,6 +17,8 @@
 		const NOMODELMESSAGE = 0;
 		const USEDELFAUTMODELMESSAGE = -1;
 		const NOMODELFOUNDMESSAGE = -2;
+		
+		const IMAGEEDITOR = "points_models/delfaut/delfaut.png";
 		
 		/*functions*/
 		
@@ -80,12 +84,16 @@
 		}
 		
 		public function drawPointEditable(){
-			
-			if ($this->message != self::NOMODELFOUNDMESSAGE) { //si un model a bien été chargé.
-				
-				return $this->model->drawPointEditableModel($this, $contextSize);
-				
-			}
+
+			$svgText = '<g  id="'.$this->getID().'pt" onmousedown="changeVisibility(\''.$this->getID().'_editP\'); setDragable(\''.$this->getID().'img\', evt)" onmousemove="move(\''.$this->getID().'\', evt)" onmouseup="unsetDragable(\''.$this->getID().'\');"  title="'.$this->getDescription().'">';
+			$svgText .= '<image id="'.$this->getID().'img" '.$this->getXMLPos().' xlink:href="'.self::IMAGEEDITOR.'" '.$this->getXMLSize().' viewbox="'.$this->getX().' '.$this->getY().' '.$this->getWidth().' '.$this->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
+
+			$svgText .= '<foreignobject id="'.$this->getID().'fo" '.$this->getXMLPos().' '.$this->getXMLSize().'><body xmlns="http://www.w3.org/1999/xhtml"><div></div></body></foreignobject></g>';
+
+			$svgText .= '<g id="'.$this->getID().'_editP" transform="translate('.($this->getX() + $this->getWidth()/2 - 50).', '.($this->getY() + $this->getHeigth() + 5).')" style="visibility:hidden;" ><rect width="100" height="50" style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0);" />';
+			$svgText .= '<foreignobject width="100" height="45" y="5"><body xmlns="http://www.w3.org/1999/xhtml"><div align="center"><a href="pointEditor.php?point='.$this->getID().'" target="_blank">Editer le point</a></div></body></foreignobject></g>';
+
+			return $svgText;
 			
 		}
 
@@ -137,6 +145,14 @@
 		
 		public function getXMLSize() {
 			return 'width="'.$this->width.'" height="'.$this->heigth.'"';
+		}
+		
+		public function getDescription() {
+			return $this->description;
+		}
+		
+		public function setDescription($pDescr) {
+			$this->description = $pDescr;
 		}
 		
 	}

@@ -22,7 +22,7 @@
 		
 		if (is_a($map, 'carte')) { //si aucune erreur est survenue on peut charger la carte
 			
-			$map->drawCardWithPointsCare();
+			$map->drawCardWithPoints();
 			
 		} else {
 		

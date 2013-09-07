@@ -10,6 +10,8 @@
 <html>
 <head>
 <title></title>
+<script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/carteEdit.js"></script>
 <meta name="generator" content="Geany">
 <meta name="author" content="Paragon">
 <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
@@ -56,12 +58,12 @@
 <?php
 	} else{
 			echo "Permission denied!";
+			include('login.php');
 	}
 	
 }else {
-
+		echo "Permission denied!";
 		include('login.php');
-		
 }
 
 ?>
