@@ -14,6 +14,11 @@
 		protected $user_psw;
 		protected $IsPSWEncrypted;
 		
+		private $sessionMessages = [ 
+		self::VISITORRIGHTS => 'Bienvenue, vous pouvez retournez à la <a href="carte.php">page de sélection des cartes</a>.',
+		self::EDITORRIGHTS => 'Bienvenue, vous pouvez retournez à la <a href="admin.php">page d\'administration</a>.',
+		self::ADMINRIGHTS => 'Bienvenue, vous pouvez retournez à la <a href="admin.php">page d\'administration</a>.'];
+		
 		public function __construct($pI, $pUN, $pR, $pML, $pMP, $pPSW, $EctPSW = false){
 		
 			$this->index = $pI;
@@ -69,6 +74,10 @@
 			
 			return in_array($pMapName, $this->user_maps);
 			
+		}
+		
+		public function getSessionOpenMessage() {
+				return $this->sessionMessages[$this->user_rigth];
 		}
 		
 	}

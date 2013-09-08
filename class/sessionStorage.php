@@ -147,7 +147,7 @@ class sessionStorage implements Serializable
 		
 	public function getSessionOpenMessage(){ //renvoie le code html à afficher à l'ouverture de session
 		
-		return 'Vous êtes loggué!';
+		return $this->user->getSessionOpenMessage();
 		
 	}
 	
