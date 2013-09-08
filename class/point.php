@@ -96,6 +96,26 @@
 			return $svgText;
 			
 		}
+		
+		public function drawEditLinkTo(){
+		
+			$htmltext = "\n\n";
+		
+			$htmltext .= '<table id="'.$this->id.'beditlink" cellspacing="5" cellpadding="5" style="width: 100%"><tbody>
+							<tr>
+							  <td style="width: 60px;" rowspan="2" colspan="1"><img alt="image non trouvée!" src="'.self::IMAGEEDITOR.'" width="50" height="50"/></td>
+							  <td><div class="linkTitle"> Boutton: '.$this->id.'</div>'.$this->description.'</td>
+							</tr>
+							<tr>
+							  <td><div class="editlinks"><a href="pointEditor.php?id='.$this->id.'">éditer</a> | <button onclick="delPoint(\''.$this->id.'\')" >delete</button></div></td>
+							</tr>
+						  </tbody><br></table>';
+		
+			$htmltext .= "\n\n";
+						  
+			return $htmltext;
+			
+		}
 
 		public function setID ($pID) {
 
@@ -114,11 +134,24 @@
 			return $this->id.'infos';
 
 		}
+		
+		public function getModelName() {
+			return get_class($model);
+		}
 
 		public function getModelParam(){
 
 			return $this->modelParams;
 
+		}
+		
+		public function getStringModelParam(){
+		
+			if(is_string($this->modelParams))
+				return $this->modelParams;
+			else 
+				return implode(',', $this->modelParams);
+			
 		}
 
 		public function setModelParam($pModelPamams){

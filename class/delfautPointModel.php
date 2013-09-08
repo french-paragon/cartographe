@@ -2,7 +2,7 @@
 
 	class delfautPointModel extends pointModel{
 
-		const DELFAULTPARAMS = './points_models/delfaut/delfaut.png'; //['./points_models/delfaut/delfaut.png', '41px', '41px', null, null, null, null, null, null, null, null, null]
+		const DELFAULTPARAMS = 'points_models/delfaut/delfaut.png'; //['./points_models/delfaut/delfaut.png', '41px', '41px', null, null, null, null, null, null, null, null, null]
 
 		const IMAGEPOS = 0;
 
@@ -50,7 +50,7 @@
 
 			$params = $this->initParamList($pPoint);
 
-			$svgText = '<g  id="'.$pPoint->getID().'pt" onclick="viewInfo(\''.$pPoint->getID().'\');" onmouseover="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'visible\';" onmouseout="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'hidden\';" title="'.$params[self::TOOLTIPPOS].'">';
+			$svgText = '<g  id="'.$pPoint->getID().'pt" onclick="viewInfo(\''.$pPoint->getID().'\');" onmouseover="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'visible\';" onmouseout="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'hidden\';" title="'.$pPoint->getDescription().'">';
 			$svgText .= '<image id="'.$pPoint->getID().'_deco" style=" visibility : hidden;" '.$pPoint->getXMLPosWD(-8).' xlink:href="'.self::POINTBRILLANCEIMG.'" height="'.($pPoint->getHeigth() + 16).'" width="'.($pPoint->getWidth() + 16).'" viewbox="'.($pPoint->getX() - 8).' '.($pPoint->getY() - 8).' '.($pPoint->getWidth() + 16).' '.($pPoint->getHeigth() + 16).'" preserveAspectRatio="xMidYMid Slice" />';
 			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$params[self::IMAGEPOS].'" '.$pPoint->getXMLSize().' viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
 
@@ -64,7 +64,7 @@
 
 			$params = $this->initParamList($pPoint);
 
-			if($params[self::TITLEPOS] != null || $params[self::LEGENDIMAGEPOS] != null || $params[self::LEGENDTEXTPOS] != null ) {
+			if(isset($params[self::TITLEPOS]) || isset($params[self::LEGENDIMAGEPOS]) || isset($params[self::LEGENDTEXTPOS]) ) {
 
 				$lSize = new coordonnee($params[self::LEGENDWIDTHPOS].','.$params[self::LEGENDHEIGHTPOS]);
 				$pos = $pPoint->getDiff($lSize);

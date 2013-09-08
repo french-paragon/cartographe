@@ -250,7 +250,7 @@
 		public function drawLinkTo() {
 		
 			echo '<table>
-				<tr><td><img src="'.$this->image_fond.'" alt = "image non trouvée" width="200px" heigth="150px"/></td><td><a href="carte.php?map='.$this->name.'">'.$this->name.'</a><br><br>'.$this->description.'</td></tr>
+				<tr><td><img src="'.$this->image_fond.'" alt = "image non trouvée" width="200px" heigth="150px"/></td><td><a class="linkTitle" href="carte.php?map='.$this->name.'">'.$this->name.'</a><br><br>'.$this->description.'</td></tr>
 			</table><br><br>';
 			
 		}
@@ -258,7 +258,7 @@
 		public function drawEditLinkTo(){
 		
 			echo '<table id="'.$this->index.'tableEdit">
-				<tr><td><img src="'.$this->image_fond.'" alt = "image non trouvée" width="200px" heigth="150px"/></td><td><a href="carte.php?map='.$this->name.'" target="_blank">'.$this->name.'</a><br><br>'.
+				<tr><td><img src="'.$this->image_fond.'" alt = "image non trouvée" width="200px" heigth="150px"/></td><td><a class="linkTitle" href="carte.php?map='.$this->name.'" target="_blank">'.$this->name.'</a><br><br>'.
 				'<div class="editlinks"><a href="admin.php?tool=maps&map='.$this->index.'">Infos</a> | <a href="mapEditor.php?map='.$this->index.'" target="_blank">editor</a> | <button onclick="del(\''.$this->index.'\')" >delete</button></div></td></tr>
 			</table><br><br>';
 			
@@ -347,7 +347,18 @@
 
 			$html .= "\n\n<div align=\"right\"><input type=\"submit\" name=\"sauver\" value=\"Sauver\"></div>\n";
 			
-			$html .= "\n</form>";
+			$html .= "\n</form><br><br>";
+			
+			$html .= "\n<fieldset><legend>Points:</legend><br>";
+			$html .= '<div class="editlinks" align="right"><a href="mapEditor.php?map='.$this->index.'" target="_blank">éditeur de points</a> | <button onclick="newPoint(\'pointList\', '.$this->index.');">nouveau point</button></div><hr><div id="pointList">';
+			
+			foreach($this->pts as $pt){
+			
+				$html .= $pt->drawEditLinkTo();
+				
+			}
+			
+			$html .= "\n</div></fieldset><br>\n";
 			
 			return $html;
 			
