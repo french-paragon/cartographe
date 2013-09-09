@@ -9,6 +9,8 @@ session_start(); //démarrage de session, elle servira à stocker la configurati
 
 require_once '../conf.php';
 
+$conf_values['rootFolder'] = '../';
+
 if(isset($_SESSION["log"]) AND !is_a($_SESSION["log"], 'sessionStorage')){
 
 	unset ($_SESSION["log"]);

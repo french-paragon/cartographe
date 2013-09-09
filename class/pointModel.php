@@ -33,6 +33,23 @@
 			return $params;
 		}
 		
+		public function getParamForm(&$pPoint){ //delfaut param form
+		
+			return '<input type="hidden" name="defModelName" value="'.$pPoint->getModelName().'"><label for"modelParam">Paramètre du modèle:</label><br><textarea id="modelParam" name="modelParam" style="height: 150px; width: '.(point::FORMLARGNESS*3).'px ;">'.$pPoint->getStringModelParam().'</textarea>';
+			
+		}
+		
+		public function treatParamForm(&$pPoint){
+			
+			if(isset($_POST['modelParam']) && isset($_POST['defModelName']) ){
+			
+				//if ($pPoint->getModelName() == $_GET['defModelName']) //avoid to set wrong parameter.
+				return $_POST['modelParam'];
+				
+			}
+			
+		}
+		
 	}
 
 ?>

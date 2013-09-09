@@ -12,4 +12,6 @@ $conf_values['dbPrefix'] = null;
 
 $conf_values['rootFolder'] = null;
 
+$conf_values['installed_points_model'] = array ('delfautPointModel', 'linkPointModel');
+
 ?>

@@ -100,3 +100,27 @@ function delPoint(id){
 	}
 	
 }
+
+function loadModelForm(fromId, toId, ptId){
+
+	var origin = document.getElementById(fromId);
+	var target = document.getElementById(toId);
+	
+	var modelName = encodeURIComponent(origin.value);
+	var pointId = encodeURIComponent(ptId);
+
+	xhr = getXMLHttpRequest();
+		
+	xhr.onreadystatechange = function() {
+					
+	target.innerHTML = "<tr><td><img alt=\"wait\" src=\"images/ajax-loader.gif\"/></td></tr>";
+					
+		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+			target.innerHTML = xhr.responseText;
+		}
+	};
+		
+	xhr.open("GET", "ajax/getPointModelForm.php?pt=" + pointId + "&model=" + modelName, true);
+	xhr.send(null);
+	
+}
