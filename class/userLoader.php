@@ -10,7 +10,7 @@
 					
 				try {
 					
-					$response = $this->connection->prepare('SELECT * FROM `users` WHERE `user_name` = :userName');
+					$response = $this->connection->prepare('SELECT * FROM `'.$this->dbPrefix.'users` WHERE `user_name` = :userName');
 					$response->execute(array(':userName' => $puserName));
 					
 					$donnees = $response->fetchAll();
@@ -45,7 +45,7 @@
 				
 				try{
 					
-					$response = $this->connection->query('SELECT * FROM `users`');
+					$response = $this->connection->query('SELECT * FROM `'.$this->dbPrefix.'users`');
 					
 					while ($donnees = $response->fetch()) {
 						$retour[$donnees['index']] = new user($donnees['index'], $donnees['user_name'], $donnees['user_right'], $donnees['user_mail'], $donnees['userMaps'],  $donnees['user_psw'], true);
@@ -61,6 +61,46 @@
 				return false;
 			}
 			
+		}
+		
+		public function registerUser(user &$pUser){
+		
+			if(isset($_SESSION["log"]) AND $_SESSION["log"]->hasUserAdminRights()) {
+				
+				if($this->isPDOConnected()) {
+					
+					try {
+						
+						$req = $this->connection->prepare("INSERT INTO `".$this->dbPrefix."users` (
+							`user_name` ,
+							`user_right` ,
+							`user_mail` ,
+							`userMaps` ,
+							`user_psw`
+							)
+							VALUES (
+							:usrName, :userRight, :userMail, :userMaps , :userPSW
+						);");
+						
+						$req->execute(array(
+						
+							':usrName' => $pUser->getName(),
+							':userRight' => $pUser->getRigth(),
+							':userMail' => $pUser->getMail(),
+							':userMaps' => $pUser->getMaps(),
+							':userPSW' => $pUser->getPSW()
+						
+						));
+						
+						return true;
+						
+					}catch(PDOException $e){
+						return false;
+					}
+					
+				} else return false;
+				
+			} else return false;
 		}
 		
 	

@@ -184,13 +184,13 @@
 					
 					$req = $this->connection->prepare("SELECT `index` FROM `".$this->dbPrefix."jeux` WHERE `full_titre` = :gName LIMIT 1");
 					
-					$req->execute([':gName' => $pMap->getGameName()]);
+					$req->execute(array(':gName' => $pMap->getGameName()));
 					
 					if($req->rowCount() == 0){
 					
 						$req = $this->connection->prepare("INSERT INTO `".$this->dbPrefix."jeux`
 						(`full_titre`) VALUES (:gName)");
-						$req->execute([':gName' => $pMap->getGameName()]);
+						$req->execute(array(':gName' => $pMap->getGameName()));
 						
 					}
 					
@@ -206,7 +206,7 @@
 					
 					WHERE `".$this->dbPrefix."cartes`.`index` = :id;");
 					
-					$req->execute([ 
+					$req->execute(array( 
 					
 					':name' => $pMap->getName(),
 					':gName' => $pMap->getGameName(),
@@ -219,7 +219,7 @@
 					':descr' => $pMap->getDescription(),
 					':id' => $pMap->getId()
 					 
-					]);
+					));
 					
 					if($req->rowCount() > 0)
 						return true;
@@ -249,7 +249,7 @@
 					VALUES 
 					(1, :name, :imageF, :decoS, :decoSP, :xS, :yS, :iP, :descr);");
 					
-					$req->execute([ 
+					$req->execute(array( 
 					
 					':name' => $pMap->getName(),
 					':imageF' => $pMap->getImageFond(),
@@ -260,7 +260,7 @@
 					':iP' => $iPub,
 					':descr' => $pMap->getDescription()
 					 
-					]);
+					));
 					
 					$req = $this->connection->query('SELECT LAST_INSERT_ID();');
 					
@@ -284,11 +284,11 @@
 					
 					$req = $this->connection->prepare("DELETE FROM `".$this->dbPrefix."cartes` WHERE `index` = :index");
 					
-					$req->execute([ 
+					$req->execute(array( 
 					
 					':index' => $index
 					 
-					]);
+					));
 					
 					if($req->rowCount() > 0)
 						return true;

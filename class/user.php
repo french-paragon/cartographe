@@ -14,10 +14,10 @@
 		protected $user_psw;
 		protected $IsPSWEncrypted;
 		
-		private $sessionMessages = [ 
+		private $sessionMessages = array( 
 		self::VISITORRIGHTS => 'Bienvenue, vous pouvez retournez à la <a href="carte.php">page de sélection des cartes</a>.',
 		self::EDITORRIGHTS => 'Bienvenue, vous pouvez retournez à la <a href="admin.php">page d\'administration</a>.',
-		self::ADMINRIGHTS => 'Bienvenue, vous pouvez retournez à la <a href="admin.php">page d\'administration</a>.'];
+		self::ADMINRIGHTS => 'Bienvenue, vous pouvez retournez à la <a href="admin.php">page d\'administration</a>.');
 		
 		public function __construct($pI, $pUN, $pR, $pML, $pMP, $pPSW, $EctPSW = false){
 		
@@ -64,6 +64,13 @@
 			
 			return $this->user_psw;
 			
+		}
+		
+		public function getMaps() {
+			if(is_array($this->user_maps))
+				return implode(',', $this->user_maps);
+			else
+				return $this->user_maps;
 		}
 		
 		public function asRigthOnMap($pMapName){

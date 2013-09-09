@@ -1,7 +1,6 @@
 <?php
     class carte
     {
-		const FORMLARGNESS = 300;
 		
 		protected $index;
 		protected $name;
@@ -16,6 +15,7 @@
 		protected $pts = array();
 		
 		const DELFAUTBACKGROUNDID = "fondCarte";
+		const FORMLARGNESS = 300;
 		 
 		public function __construct($pIndex, $pName, $pImage_fond, $pDeco_style, $pDeco_style_params, $pX_size, $pY_size, $pDecription, $pPublic, $pGameName){
 			
@@ -137,7 +137,7 @@
 			$SVGcontent .= $this->index;
 
 			$SVGcontent .= '"
-			version="1.1">';
+			version="1.1">Une erreur est survenue, votre navigateur ne semble pas assez récent pour utiliser le svg. Mettez votre navigateur à jour et si le problème persiste essayez d\'en utiliser un autre!';
 			
 			return $SVGcontent;
 			
@@ -295,13 +295,13 @@
 		public function drawCardInfosEditable(mapLoader &$loader){
 			
 			$html = "\n<iframe src=\"ajax/saveMap.php?id=".$this->index."\" width=\"100%\" height=\"40\" name=\"saveFrame\" id=\"saveFrame\" frameborder=\"0\"></iframe><br>\n";
-			$html .= "<form method=\"post\"  action=\"ajax/saveMap.php?map=".$this->index."\" target=\"saveFrame\" accept-charset=\"ISO-8859-1\">\n";
+			$html .= "<form method=\"post\"  action=\"ajax/saveMap.php?map=".$this->index."\" target=\"saveFrame\" accept-charset=\"UTF-8\">\n";
 			
 			$html .= '<fieldset><legend>Informations de base:</legend><br>
 						<label for="name">Nom:</label>&nbsp;&nbsp;&nbsp;
 						<input id="name" name="name" type="text" width="'.self::FORMLARGNESS.'" value="'.$this->name.'"><br><br>
 						<label for="description">Description:</label><br>
-						<textarea id="description" name="description" style="height: 150px; width: '.(self::FORMLARGNESS*3).'px ;">'.utf8_encode($this->description).'</textarea><br><br>
+						<textarea id="description" name="description" style="height: 150px; width: '.(self::FORMLARGNESS*3).'px ;">'.$this->description.'</textarea><br><br>
 						<label for="visibility">Carte publique?&nbsp;&nbsp;&nbsp;</label><input id="visibility" type="checkbox" name="visibility" value="isPublic" ';
 						
 			if($this->isPublic)

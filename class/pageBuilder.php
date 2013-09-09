@@ -14,7 +14,10 @@
 		}
 		
 		public function drawPage () {
-				echo '<html><head>'.$this->head.'</head><body>'.$this->body.'</body></html>';
+				echo '<html><head>
+						<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+						<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
+						<meta http-equiv="content-style-type" content="text/css">'.$this->head.'</head><body>'.$this->body.'</body></html>';
 		}
 		
 	}
