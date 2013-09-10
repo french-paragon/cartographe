@@ -101,7 +101,7 @@
 				$page->addToHead('<script type="text/javascript" src="js/carte.js"></script>');
 				$page->addToHead('<script type="text/javascript" src="js/carteEdit.js"></script>');
 				
-				$htmltext = '<table cellspacing="5" cellpadding="5" style="width: 100%"><tbody><tr><td id="form">';
+				$htmltext = '<table cellspacing="5" cellpadding="5" style="width: 95%"><tbody><tr><td id="form">';
 				
 				$htmltext .= "<form method=\"post\"  action=\"ajax/savePoint.php?point=".$this->id."\" target=\"saveFrame\" accept-charset=\"UTF-8\">\n";
 				
@@ -134,7 +134,7 @@
 				$htmltext .= "\n\n<div align=\"right\"><input type=\"submit\" name=\"sauver\" value=\"Sauver les changements\"></div>\n</form>";
 				
 				$htmltext .= '</td>
-				<td id="apercu" width="600"><div><iframe src="ajax/savePoint.php?point="'.$this->id.'" width="590px" height="500px" name="saveFrame" id="saveFrame" frameborder="0"></iframe></div><br></td></tr></tbody></table>';
+				<td id="apercu" width="600" height="100%"><div><iframe src="ajax/savePoint.php?point="'.$this->id.'" width="580px" height="90%" name="saveFrame" id="saveFrame" frameborder="0"></iframe></div><br></td></tr></tbody></table>';
 			
 				$page->addToBody($htmltext);
 			
