@@ -1,6 +1,20 @@
 <?php
     class point extends coordonnee
     {
+		
+		/* Constantes */
+		const DELFAUTMODELNAME = "delfautPointModel";
+		const NOMODELMESSAGE = 0;
+		const USEDELFAUTMODELMESSAGE = -1;
+		const NOMODELFOUNDMESSAGE = -2;
+		
+		const IMAGEEDITOR = "points_models/delfaut/delfaut.png";
+		
+		const FORMLARGNESS = 300;
+		
+		const SHOWLARGNESS = 500;
+		const SHOWHEIGNESS = 700;
+		
 		/* Vars */
 		protected $id;
 		protected $model;
@@ -12,15 +26,10 @@
 		protected $width;
 		protected $heigth;
 		
-		/* Constantes */
-		const DELFAUTMODELNAME = "delfautPointModel";
-		const NOMODELMESSAGE = 0;
-		const USEDELFAUTMODELMESSAGE = -1;
-		const NOMODELFOUNDMESSAGE = -2;
-		
-		const IMAGEEDITOR = "points_models/delfaut/delfaut.png";
-		
-		const FORMLARGNESS = 300;
+		protected $showImage = self::IMAGEEDITOR;
+		protected $showWidth = self::SHOWLARGNESS;
+		protected $showHeight = self::SHOWHEIGNESS;
+		protected $showYPos = 30;
 		
 		/*functions*/
 		
@@ -65,6 +74,71 @@
 				$this->message = self::NOMODELFOUNDMESSAGE; //et on indique que le modèle n'existe pas
 					
 			}
+			
+		}
+		
+		public function initOverviewParams(){
+			
+			if($this->message != self::NOMODELFOUNDMESSAGE){
+			
+				$this->model->initModelRelatedParams($this);
+				
+			}
+			
+		}
+		
+		private function initSVG () {
+			
+			$SVGcontent = '<svg
+			xmlns:dc="http://purl.org/dc/elements/1.1/"
+			xmlns:cc="http://creativecommons.org/ns#"
+			xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+			xmlns:svg="http://www.w3.org/2000/svg"
+			xmlns:xlink="http://www.w3.org/1999/xlink"
+			width="';
+
+			$SVGcontent .= $this->showWidth;
+
+			$SVGcontent .= '" height="';
+
+			$SVGcontent .= $this->showHeight;
+
+			$SVGcontent .= '" id="';
+
+			$SVGcontent .= $this->id;
+
+			$SVGcontent .= 'PTsvg"
+			version="1.1">Une erreur est survenue, votre navigateur ne semble pas assez récent pour utiliser le svg. Mettez votre navigateur à jour et si le problème persiste essayez d\'en utiliser un autre!';
+			
+			return $SVGcontent;
+			
+		}
+		
+		private function endSVG () {
+
+			return "</svg>";
+			
+		}
+		
+		public function drawOverview() {
+		
+			$oldXpos = $this->x;
+			$oldYpos = $this->y;
+			
+			$this->x = (floatval($this->showWidth) - floatval($this->width))/2;
+			$this->y = $this->showYPos;
+			
+			$retour = $this->initSVG();
+			
+			$retour .= $this->drawPoint();
+			$retour .= $this->drawPointInfos(new coordonnee($this->showWidth.','.$this->showHeight));
+			
+			$retour .= $this->endSVG();
+			
+			$this->x = $oldXpos;
+			$this->y = $oldYpos;
+			
+			return $retour;
 			
 		}
 		
@@ -134,7 +208,7 @@
 				$htmltext .= "\n\n<div align=\"right\"><input type=\"submit\" name=\"sauver\" value=\"Sauver les changements\"></div>\n</form>";
 				
 				$htmltext .= '</td>
-				<td id="apercu" width="600" height="100%"><div><iframe src="ajax/savePoint.php?point="'.$this->id.'" width="580px" height="90%" name="saveFrame" id="saveFrame" frameborder="0"></iframe></div><br></td></tr></tbody></table>';
+				<td id="apercu" width="600" height="100%"><div><iframe src="ajax/savePoint.php?point='.$this->id.'" width="560px" height="800px" name="saveFrame" id="saveFrame" frameborder="0"></iframe></div><br></td></tr></tbody></table>';
 			
 				$page->addToBody($htmltext);
 			
@@ -260,6 +334,11 @@
 		public function setDescription($pDescr) {
 			$this->description = $pDescr;
 		}
+		
+		public function setShowImage($pI){ $this->showImage = $pI;}
+		public function setShowWidth($pL){ $this->showWidth = $pL;}
+		public function setShowHeight($pH){ $this->showHeight = $pH;}
+		public function setShowYPos($pY){ $this->showYPos = $pY;}
 		
 	}
 ?>

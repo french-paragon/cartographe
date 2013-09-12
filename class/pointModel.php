@@ -2,6 +2,8 @@
 
 	abstract class pointModel{
 	
+		const DELFAULTPARAMS = '';
+	
 		function __construct () {
 			
 		}
@@ -13,6 +15,8 @@
 		abstract protected function drawPointInfosModel (&$pPoint, $contextSize);
 		
 		abstract protected function drawPointEditableModel(&$pPoint, $contextSize);
+
+		abstract protected function initModelRelatedParams(&$pPoint);
 
 		protected function initParamList (&$pPoint) {
 

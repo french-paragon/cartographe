@@ -2,21 +2,35 @@
 
 	class linkPointModel extends pointModel{
 
-		const DELFAULTPARAMS = './points_models/delfaut/delfaut.png'; //['./x';
+		const DELFAULTPARAMS = 'points_models/delfaut/delfaut.png'; //['./x';
 		
 		const IMAGEPOS = 0;
 		const TARGETPOS = 1;
 		
-		const POINTBRILLANCEIMG = './points_models/delfaut/deco.png';
+		const POINTBRILLANCEIMG = 'points_models/delfaut/deco.png';
+
+		const BORDERDISTANCE = 20;
 		
 		public function drawEditor() {}
 		
+		public function initModelRelatedParams(&$pPoint){
+		
+			$params = $this->initParamList($pPoint);
+			
+			if(isset($params[self::IMAGEPOS])) $pPoint->setShowImage($params[self::IMAGEPOS]);
+			$pPoint->setShowHeight(floatval($pPoint->getHeigth()) + floatval(2*self::BORDERDISTANCE) );
+			$pPoint->setShowWidth( floatval($pPoint->getWidth()) + floatval(2*self::BORDERDISTANCE));
+			
+		}
+		
 		public function drawPointEditableModel(&$pPoint, $contextSize){
+
+			global $conf_values;
 
 			$params = $this->initParamList($pPoint);
 
 			$svgText = '<g  id="'.$pPoint->getID().'" onclick="setDraggable(\''.$pPoint->getID().'\', true);" onmousemove="move(\''.$pPoint->getID().'\');" onmouserelease="setDraggable(\''.$pPoint->getID().'\', false);" onmouseover="document.getElementById(\''.$pPoint->getID().'_editP\').style.visibility = \'visible\';" title="'.$pPoint->getDescription().'">';
-			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$params[self::IMAGEPOS].'" height="'.$pPoint->getHeigth().'" width="'.$pPoint->getWidth().'" viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
+			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$conf_values['rootFolder'].$params[self::IMAGEPOS].'" height="'.$pPoint->getHeigth().'" width="'.$pPoint->getWidth().'" viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
 
 			$svgText .= '<foreignobject '.$pPoint->getXMLPos().' width="'.$pPoint->getWidth().'" height="'.$pPoint->getHeigth().'"><body xmlns=\"http://www.w3.org/1999/xhtml\"><div></div></body></foreignobject></g>';
 
@@ -29,6 +43,8 @@
 		
 		public function drawPointModel (&$pPoint){
 
+			global $conf_values;
+
 			$params = $this->initParamList($pPoint);
 			$svgText = '';
 
@@ -38,7 +54,7 @@
 			
 			$svgText .= '<g  id="'.$pPoint->getID().'" onmouseover="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'visible\';" onmouseout="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'hidden\';" title="'.$pPoint->getDescription().'">';
 			$svgText .= '<image id="'.$pPoint->getID().'_deco" style=" visibility : hidden;" '.$pPoint->getXMLPosWD(-8).' xlink:href="'.self::POINTBRILLANCEIMG.'" height="'.($pPoint->getHeigth() + 16).'" width="'.($pPoint->getWidth() + 16).'" viewbox="'.($pPoint->getX() - 8).' '.($pPoint->getY() - 8).' '.($pPoint->getWidth() + 16).' '.($pPoint->getHeigth() + 16).'" preserveAspectRatio="xMidYMid Slice" />';
-			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$params[self::IMAGEPOS].'" height="'.$pPoint->getHeigth().'" width="'.$pPoint->getWidth().'" viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
+			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$conf_values['rootFolder'].$params[self::IMAGEPOS].'" height="'.$pPoint->getHeigth().'" width="'.$pPoint->getWidth().'" viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
 
 			$svgText .= '<foreignobject '.$pPoint->getXMLPos().' width="'.$pPoint->getWidth().'" height="'.$pPoint->getHeigth().'"><body xmlns=\"http://www.w3.org/1999/xhtml\"><div></div></body></foreignobject></g>';
 

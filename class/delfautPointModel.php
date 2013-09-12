@@ -32,12 +32,24 @@
 		
 		public function drawEditor() {}
 		
+		public function initModelRelatedParams(&$pPoint){
+		
+			$params = $this->initParamList($pPoint);
+			
+			if(isset($params[self::IMAGEPOS])) $pPoint->setShowImage($params[self::IMAGEPOS]);
+			if(isset($params[self::LEGENDHEIGHTPOS])) $pPoint->setShowHeight(floatval($pPoint->getHeigth()) + floatval($params[self::LEGENDHEIGHTPOS]) + floatval(3*self::BORDERDISTANCE) );
+			if(isset($params[self::LEGENDWIDTHPOS])) $pPoint->setShowWidth(floatval($params[self::LEGENDWIDTHPOS]) + floatval(2*self::BORDERDISTANCE));
+			
+		}
+		
 		public function drawPointEditableModel(&$pPoint, $contextSize){
+
+			global $conf_values;
 
 			$params = $this->initParamList($pPoint);
 
-			$svgText = '<g  id="'.$pPoint->getID().'" onclick="setDraggable(\''.$pPoint->getID().'\', true);" onmousemove="move(\''.$pPoint->getID().'\');" onmouserelease="setDraggable(\''.$pPoint->getID().'\', false);" onmouseover="document.getElementById(\''.$pPoint->getID().'_editP\').style.visibility = \'visible\';" title="'.$params[self::TOOLTIPPOS].'">';
-			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$params[self::IMAGEPOS].'" '.$pPoint->getXMLSize().' viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
+			$svgText = '<g  id="'.$pPoint->getID().'" onclick="setDraggable(\''.$pPoint->getID().'\', true);" onmousemove="move(\''.$pPoint->getID().'\');" onmouserelease="setDraggable(\''.$pPoint->getID().'\', false);" onmouseover="document.getElementById(\''.$pPoint->getID().'_editP\').style.visibility = \'visible\';" title="'.$pPoint->getDescription().'">';
+			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$conf_values['rootFolder'].$params[self::IMAGEPOS].'" '.$pPoint->getXMLSize().' viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
 
 			$svgText .= '<foreignobject '.$pPoint->getXMLPos().$pPoint->getXMLSize().'><body xmlns=\"http://www.w3.org/1999/xhtml\"><div></div></body></foreignobject></g>';
 
@@ -50,11 +62,13 @@
 	
 		public function drawPointModel (&$pPoint){
 
+			global $conf_values;
+
 			$params = $this->initParamList($pPoint);
 
 			$svgText = '<g  id="'.$pPoint->getID().'pt" onclick="viewInfo(\''.$pPoint->getID().'\');" onmouseover="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'visible\';" onmouseout="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'hidden\';" title="'.$pPoint->getDescription().'">';
-			$svgText .= '<image id="'.$pPoint->getID().'_deco" style=" visibility : hidden;" '.$pPoint->getXMLPosWD(-8).' xlink:href="'.self::POINTBRILLANCEIMG.'" height="'.($pPoint->getHeigth() + 16).'" width="'.($pPoint->getWidth() + 16).'" viewbox="'.($pPoint->getX() - 8).' '.($pPoint->getY() - 8).' '.($pPoint->getWidth() + 16).' '.($pPoint->getHeigth() + 16).'" preserveAspectRatio="xMidYMid Slice" />';
-			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$params[self::IMAGEPOS].'" '.$pPoint->getXMLSize().' viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
+			$svgText .= '<image id="'.$pPoint->getID().'_deco" style=" visibility : hidden;" '.$pPoint->getXMLPosWD(-8).' xlink:href="'.$conf_values['rootFolder'].self::POINTBRILLANCEIMG.'" height="'.($pPoint->getHeigth() + 16).'" width="'.($pPoint->getWidth() + 16).'" viewbox="'.($pPoint->getX() - 8).' '.($pPoint->getY() - 8).' '.($pPoint->getWidth() + 16).' '.($pPoint->getHeigth() + 16).'" preserveAspectRatio="xMidYMid Slice" />';
+			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$conf_values['rootFolder'].$params[self::IMAGEPOS].'" '.$pPoint->getXMLSize().' viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
 
 			$svgText .= '<foreignobject '.$pPoint->getXMLPos().' '.$pPoint->getXMLSize().'><body xmlns=\"http://www.w3.org/1999/xhtml\"><div></div></body></foreignobject></g>';
 
@@ -63,6 +77,8 @@
 		}
 		
 		public function drawPointInfosModel (&$pPoint, $contextSize){
+
+			global $conf_values;
 
 			$params = $this->initParamList($pPoint);
 
@@ -91,9 +107,9 @@
 				
 					$pos->setY($pPoint->getY()- $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE);
 					
-				} elseif ($pos->getY() < self::BORDERDISTANCE ){
+				} elseif ($pos->getY() < self::BORDERDISTANCE ){ //si le point est trop prêt du haut
 
-					$pos->setY($pPoint->getY() + self::BORDERDISTANCE);
+					$pos->setY($pPoint->getY() + $pPoint->getHeigth() + self::BORDERDISTANCE);
 
 				}
 
@@ -116,8 +132,8 @@
 
 				//génération du fond
 					
-				if (file_exists($params[self::LEGENDBGPOS])) {
-					$svgText .= '<image y="0" x="0" xlink:href="'.$params[self::LEGENDBGPOS].'" height="'.$params[self::LEGENDHEIGHTPOS].'" width="'.$params[self::LEGENDWIDTHPOS].'" viewbox="0 0 '.$params[self::LEGENDWIDTHPOS].' '.$params[self::LEGENDHEIGHTPOS].'" preserveAspectRatio="none" />';
+				if (file_exists($conf_values['rootFolder'].$params[self::LEGENDBGPOS]) && is_file($conf_values['rootFolder'].$params[self::LEGENDBGPOS])) {
+					$svgText .= '<image y="0" x="0" xlink:href="'.$conf_values['rootFolder'].$params[self::LEGENDBGPOS].'" height="'.$params[self::LEGENDHEIGHTPOS].'" width="'.$params[self::LEGENDWIDTHPOS].'" viewbox="0 0 '.$params[self::LEGENDWIDTHPOS].' '.$params[self::LEGENDHEIGHTPOS].'" preserveAspectRatio="none" />';
 
 					//protection de l'image
 					$svgText .= '<foreignobject x="0" y="0" width="'.$params[self::LEGENDWIDTHPOS].'" height="'.$params[self::LEGENDHEIGHTPOS].'"><body><div></div></body></foreignobject>'; 
@@ -138,7 +154,7 @@
 
 				}
 
-				if ($params[self::LEGENDIMAGEPOS] != null AND file_exists($params[self::LEGENDIMAGEPOS]) ) {
+				if ($params[self::LEGENDIMAGEPOS] != null AND file_exists($conf_values['rootFolder'].$params[self::LEGENDIMAGEPOS]) ) {
 
 					$h = self::BORDERDISTANCE;
 					
@@ -149,7 +165,7 @@
 					
 					$params[self::LEGENDIMAGEHEIGHTPOS] = ($params[self::LEGENDIMAGEHEIGHTPOS] <= $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h) ? $params[self::LEGENDIMAGEHEIGHTPOS] : $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h;
 
-					$svgText .= '<image y="'.$h.'" x="'.self::BORDERDISTANCE.'" xlink:href="'.$params[self::LEGENDIMAGEPOS].'" height="'.$params[self::LEGENDIMAGEHEIGHTPOS].'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" viewbox="0 0 '.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).' '.$params[self::LEGENDIMAGEHEIGHTPOS].'" preserveAspectRatio="xMidYMid" />';
+					$svgText .= '<image y="'.$h.'" x="'.self::BORDERDISTANCE.'" xlink:href="'.$conf_values['rootFolder'].$params[self::LEGENDIMAGEPOS].'" height="'.$params[self::LEGENDIMAGEHEIGHTPOS].'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" viewbox="0 0 '.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).' '.$params[self::LEGENDIMAGEHEIGHTPOS].'" preserveAspectRatio="xMidYMid" />';
 
 					$svgText .= '<foreignobject x="'.self::BORDERDISTANCE.'" y="'.$h.'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" height="'.$params[self::LEGENDIMAGEHEIGHTPOS].'"><body><div></div></body></foreignobject>';
 
