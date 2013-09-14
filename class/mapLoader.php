@@ -208,16 +208,16 @@
 					
 					$req->execute(array( 
 					
-					':name' => $pMap->getName(),
-					':gName' => $pMap->getGameName(),
-					':imageF' => $pMap->getImageFond(),
-					':decoS' => $pMap->getDecoStyle(),
-					':decoSP' => $pMap->getDecoStyleParams(),
-					':xS' => $pMap->getXsize(),
-					':yS' => $pMap->getYsize(),
+					':name' => prepareSave($pMap->getName()),
+					':gName' => prepareSave($pMap->getGameName()),
+					':imageF' => prepareSave($pMap->getImageFond()),
+					':decoS' => prepareSave($pMap->getDecoStyle()),
+					':decoSP' => prepareSave($pMap->getDecoStyleParams()),
+					':xS' => prepareSave($pMap->getXsize()),
+					':yS' => prepareSave($pMap->getYsize()),
 					':iP' => $iPub,
-					':descr' => $pMap->getDescription(),
-					':id' => $pMap->getId()
+					':descr' => prepareSave($pMap->getDescription()),
+					':id' => prepareSave($pMap->getId())
 					 
 					));
 					
@@ -251,14 +251,14 @@
 					
 					$req->execute(array( 
 					
-					':name' => $pMap->getName(),
-					':imageF' => $pMap->getImageFond(),
-					':decoS' => $pMap->getDecoStyle(),
-					':decoSP' => $pMap->getDecoStyleParams(),
-					':xS' => $pMap->getXsize(),
-					':yS' => $pMap->getYsize(),
+					':name' => prepareSave($pMap->getName()),
+					':imageF' => prepareSave($pMap->getImageFond()),
+					':decoS' => prepareSave($pMap->getDecoStyle()),
+					':decoSP' => prepareSave($pMap->getDecoStyleParams()),
+					':xS' => prepareSave($pMap->getXsize()),
+					':yS' => prepareSave($pMap->getYsize()),
 					':iP' => $iPub,
-					':descr' => $pMap->getDescription()
+					':descr' => prepareSave($pMap->getDescription())
 					 
 					));
 					

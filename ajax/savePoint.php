@@ -8,10 +8,10 @@
 		
 			if(isset($_GET['point']) && isset($_POST['descr']) && isset($_POST['width']) && isset($_POST['height']) && isset($_POST['x']) && isset($_POST['y']) && isset($_POST['model']) ){
 				
-				$pt = new point($_POST['x'].','.$_POST['y'], $_POST['model'] , null, $_GET['point']);
+				$pt = new point($_POST['x'].','.$_POST['y'], prepareSave($_POST['model']) , null, prepareSave($_GET['point']) );
 				$pt->setWidth(intval($_POST['width']));
 				$pt->setHeigth(intval($_POST['height']));
-				$pt->setDescription($_POST['descr']);
+				$pt->setDescription( prepareSave($_POST['descr']) );
 					
 				if($pt->getMessage() > point::NOMODELFOUNDMESSAGE) //si le modèle est chargé
 					$pt->setModelParam($pt->getModel()->treatParamForm($pt));

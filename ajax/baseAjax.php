@@ -8,6 +8,7 @@ session_set_cookie_params (3600); //sessions d'une heure.
 session_start(); //démarrage de session, elle servira à stocker la configuration + d'autre choses.
 
 require_once '../conf.php';
+require_once '../functions.php';
 
 $conf_values['rootFolder'] = '../';
 

@@ -47,8 +47,13 @@
 			
 			if(isset($_POST['modelParam']) && isset($_POST['defModelName']) ){
 			
+				$p = explode(',', $_POST['modelParam']);
+				
+				foreach ($p as $key => $val){
+					$p[$key] = prepareSave($val);
+				}
 				//if ($pPoint->getModelName() == $_GET['defModelName']) //avoid to set wrong parameter.
-				return $_POST['modelParam'];
+				return implode(',', $p);
 				
 			}
 			

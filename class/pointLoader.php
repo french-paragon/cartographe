@@ -46,14 +46,14 @@
 					
 					$req->execute(array( 
 					
-					':idM' => $pPoint->getID(),
+					':idM' => prepareSave($pPoint->getID()),
 					':model' => point::DELFAUTMODELNAME,
-					':modelP' => $pPoint->getStringModelParam(),
-					':xS' => $pPoint->getWidth(),
-					':yS' => $pPoint->getHeigth(),
-					':xP' => $pPoint->getX(),
-					':yP' => $pPoint->getY(),
-					':descr' => $pPoint->getDescription()
+					':modelP' => prepareSave($pPoint->getStringModelParam()),
+					':xS' => prepareSave($pPoint->getWidth()),
+					':yS' => prepareSave($pPoint->getHeigth()),
+					':xP' => prepareSave($pPoint->getX()),
+					':yP' => prepareSave($pPoint->getY()),
+					':descr' => prepareSave($pPoint->getDescription())
 					 
 					));
 					
@@ -96,14 +96,14 @@
 					
 					$req->execute(array( 
 					
-					':idM' => $pPoint->getID(),
-					':model' => $pPoint->getModelName(),
-					':modelP' => $pPoint->getStringModelParam(),
-					':xS' => $pPoint->getWidth(),
-					':yS' => $pPoint->getHeigth(),
-					':xP' => $pPoint->getX(),
-					':yP' => $pPoint->getY(),
-					':descr' => $pPoint->getDescription()
+					':idM' => prepareSave($pPoint->getID()),
+					':model' => prepareSave($pPoint->getModelName()),
+					':modelP' => prepareSaveSoft($pPoint->getStringModelParam()),
+					':xS' => prepareSave($pPoint->getWidth()),
+					':yS' => prepareSave($pPoint->getHeigth()),
+					':xP' => prepareSave($pPoint->getX()),
+					':yP' => prepareSave($pPoint->getY()),
+					':descr' => prepareSave($pPoint->getDescription())
 					 
 					));
 						

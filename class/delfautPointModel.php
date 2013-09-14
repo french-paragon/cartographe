@@ -286,7 +286,7 @@
 			
 			if(isset($_POST['imageFP'])){
 			
-				$retour .= $_POST['imageFP'];
+				$retour .= prepareSave($_POST['imageFP']);
 				
 				$act = array();
 				
@@ -297,17 +297,17 @@
 				if(isset($act['SetLegend'])){
 					
 					if(isset($_POST['hP']))
-						$retour .= ','.$_POST['hP'];
+						$retour .= ','.prepareSave($_POST['hP']);
 					else return $retour;
 					
 					if(isset($_POST['lP']))
-						$retour .= ','.$_POST['lP'];
+						$retour .= ','.prepareSave($_POST['lP']);
 					else return $retour;
 					
 					if(isset($act['SetTitre'])){
 						
 						if( isset($_POST['titrePL']) && isset($_POST['titreHPL']) )
-							$retour .= ','.$_POST['titrePL'].','.$_POST['titreHPL'];
+							$retour .= ','.prepareSave($_POST['titrePL']).','.prepareSave($_POST['titreHPL']);
 						else return $retour;
 						
 					} else $retour .= ',,';
@@ -315,7 +315,7 @@
 					if(isset($act['SetImage'])){
 						
 						if( isset($_POST['imagePL']) && isset($_POST['imageHPL']) )
-							$retour .= ','.$_POST['imagePL'].','.$_POST['imageHPL'];
+							$retour .= ','.prepareSave($_POST['imagePL']).','.prepareSave($_POST['imageHPL']);
 						else return $retour;
 						
 					} else $retour .= ',,';
@@ -323,7 +323,7 @@
 					if(isset($act['SetText'])){
 						
 						if( isset($_POST['textPL']) )
-							$retour .= ','.$_POST['textPL'];
+							$retour .= ','.prepareSave($_POST['textPL']);
 						else return $retour;
 						
 					} else $retour .= ',';
@@ -331,7 +331,7 @@
 					if(isset($act['SetBGImage'])){
 						
 						if( isset($_POST['lPBG']) )
-							$retour .= ','.$_POST['lPBG'];
+							$retour .= ','.prepareSave($_POST['lPBG']);
 						else return $retour;
 						
 					} else $retour .= ',';
@@ -339,7 +339,7 @@
 					if(isset($act['SetLinkTitle'])){
 						
 						if( isset($_POST['lPT']) )
-							$retour .= ','.$_POST['lPT'];
+							$retour .= ','.prepareSave($_POST['lPT']);
 						else return $retour;
 						
 					} else $retour .= ',';
@@ -347,7 +347,7 @@
 					if(isset($act['SetLinkImage'])){
 						
 						if( isset($_POST['lPI']) )
-							$retour .= ','.$_POST['lPI'];
+							$retour .= ','.prepareSave($_POST['lPI']);
 						else return $retour;
 						
 					} else $retour .= ',';
