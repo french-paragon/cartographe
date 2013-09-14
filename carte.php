@@ -16,6 +16,8 @@
 	$ml = new mapLoader($conf_values['dbName'], $conf_values['dbHost'], $conf_values['dbUser'], $conf_values['dbPsw'], $conf_values['dbPrefix']);
 	$ml->connectPDO();
 	
+	$drawList = false;
+	
 	if(isset($_GET['map'])) {
 		
 		$map = $ml->getMapWithName($_GET['map']);
@@ -26,31 +28,31 @@
 			
 		} else {
 		
-			$maps->getMapsList();
-			
-			foreach($maps as $map) {
-				
-				$map->drawLinkTo();
-				
-			}
+			$drawList = true;
 			
 		}
 		
-	} else {
+	} 
+	
+	if ($drawList){
 		
 		$maps = $ml->getMapsList();
+		
+		$page = new pageBuilder();
 			
 		foreach($maps as $gName => $gMaps) { //pour chaque jeux on récupère son noms et les cartes associées.
 			
-			echo '<h1>'.$gName.'</h1>'; //on imprime le titre.
+			$page->addToBody('<h1>'.$gName.'</h1>'); //on imprime le titre.
 			
 			foreach ($gMaps as $map) {
 				
-				$map->drawLinkTo(); //on sort les cartes.
+				$page->addToBody($map->drawLinkTo()); //on sort les cartes.
 				
 			}
 				
 		}
+			
+		$page->drawPage();
 		
 	}
 

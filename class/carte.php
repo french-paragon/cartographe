@@ -249,7 +249,7 @@
 		/* cette fonction sert à obtenir un lien vers la carte*/
 		public function drawLinkTo() {
 		
-			echo '<table>
+			return '<table>
 				<tr><td><img src="'.$this->image_fond.'" alt = "image non trouvée" width="200px" heigth="150px"/></td><td><a class="linkTitle" href="carte.php?map='.$this->name.'">'.$this->name.'</a><br><br>'.$this->description.'</td></tr>
 			</table><br><br>';
 			
