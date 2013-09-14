@@ -75,6 +75,8 @@
 					
 			}
 			
+			$this->initOverviewParams();
+			
 		}
 		
 		public function initOverviewParams(){
@@ -221,7 +223,11 @@
 		public function drawPointEditable(){
 
 			$svgText = '<g  id="'.$this->getID().'pt" onmousedown="changeVisibility(\''.$this->getID().'_editP\'); setDragable(\''.$this->getID().'img\', evt)" onmousemove="move(\''.$this->getID().'\', evt)" onmouseup="unsetDragable(\''.$this->getID().'\');"  title="'.$this->getDescription().'">';
-			$svgText .= '<image id="'.$this->getID().'img" '.$this->getXMLPos().' xlink:href="'.self::IMAGEEDITOR.'" '.$this->getXMLSize().' viewbox="'.$this->getX().' '.$this->getY().' '.$this->getWidth().' '.$this->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
+			$svgText .= '<image id="'.$this->getID().'img" '.$this->getXMLPos().' xlink:href="';
+			
+			$svgText .= (isset($this->showImage))? $this->showImage : self::IMAGEEDITOR;
+			
+			$svgText .= '" '.$this->getXMLSize().' viewbox="'.$this->getX().' '.$this->getY().' '.$this->getWidth().' '.$this->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
 
 			$svgText .= '<foreignobject id="'.$this->getID().'fo" '.$this->getXMLPos().' '.$this->getXMLSize().'><body xmlns="http://www.w3.org/1999/xhtml"><div></div></body></foreignobject></g>';
 
@@ -238,7 +244,11 @@
 		
 			$htmltext .= '<table id="'.$this->id.'beditlink" cellspacing="5" cellpadding="5" style="width: 100%"><tbody>
 							<tr>
-							  <td style="width: 60px;" rowspan="2" colspan="1"><img alt="image non trouvée!" src="'.self::IMAGEEDITOR.'" width="50" height="50"/></td>
+							  <td style="width: 60px;" rowspan="2" colspan="1"><img alt="image non trouvée!" src="';
+			
+			$htmltext .= (isset($this->showImage))? $this->showImage : self::IMAGEEDITOR;
+			
+			$htmltext .= '" width="50" height="50"/></td>
 							  <td><div class="linkTitle"> Boutton: '.$this->id.'</div>'.$this->description.'</td>
 							</tr>
 							<tr>
