@@ -16,7 +16,7 @@
 	$ml = new mapLoader($conf_values['dbName'], $conf_values['dbHost'], $conf_values['dbUser'], $conf_values['dbPsw'], $conf_values['dbPrefix']);
 	$ml->connectPDO();
 	
-	$drawList = false;
+	$drawList = true;
 	
 	if(isset($_GET['map'])) {
 		
@@ -25,10 +25,8 @@
 		if (is_a($map, 'carte')) { //si aucune erreur est survenue on peut charger la carte
 			
 			$map->drawCardWithPoints();
-			
-		} else {
 		
-			$drawList = true;
+			$drawList = false;
 			
 		}
 		
