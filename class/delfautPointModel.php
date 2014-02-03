@@ -171,6 +171,23 @@
 
 					$jumps += 2;
 
+				}else if ($params[self::LEGENDIMAGEPOS] != null AND url_exists($params[self::LEGENDIMAGEPOS]) ) {
+
+					$h = self::BORDERDISTANCE;
+					
+					if ($jumps == 1){
+
+						$h += $params[self::LEGENDTITLEHEIGHTPOS] + 5;
+					}
+					
+					$params[self::LEGENDIMAGEHEIGHTPOS] = ($params[self::LEGENDIMAGEHEIGHTPOS] <= $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h) ? $params[self::LEGENDIMAGEHEIGHTPOS] : $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h;
+
+					$svgText .= '<image y="'.$h.'" x="'.self::BORDERDISTANCE.'" xlink:href="'.$params[self::LEGENDIMAGEPOS].'" height="'.$params[self::LEGENDIMAGEHEIGHTPOS].'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" viewbox="0 0 '.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).' '.$params[self::LEGENDIMAGEHEIGHTPOS].'" preserveAspectRatio="xMidYMid" />';
+
+					$svgText .= '<foreignobject x="'.self::BORDERDISTANCE.'" y="'.$h.'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" height="'.$params[self::LEGENDIMAGEHEIGHTPOS].'"><body><div></div></body></foreignobject>';
+
+					$jumps += 2;
+
 				}
 
 				if ($params[self::LEGENDTEXTPOS] != null ) {
