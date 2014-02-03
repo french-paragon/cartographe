@@ -24,9 +24,12 @@
 		
 		if (is_a($map, 'carte')) { //si aucune erreur est survenue on peut charger la carte
 			
-			$map->drawCardWithPoints();
-		
-			$drawList = false;
+			if( $map->isPublic() ) {
+			
+				$map->drawCardWithPoints();
+				$drawList = false;
+			
+			}
 			
 		}
 		
@@ -40,11 +43,20 @@
 			
 		foreach($maps as $gName => $gMaps) { //pour chaque jeux on récupère son noms et les cartes associées.
 			
-			$page->addToBody('<h1>'.$gName.'</h1>'); //on imprime le titre.
+			$drawGame = false;
+			
+			foreach ($gMaps as $map) {
+				if( $map->isPublic() ) {
+					$drawGame = true;
+					break;
+				}
+			}
+			
+			if($drawGame) $page->addToBody('<h1>'.$gName.'</h1>'); //on imprime le titre.
 			
 			foreach ($gMaps as $map) {
 				
-				$page->addToBody($map->drawLinkTo()); //on sort les cartes.
+				if( $map->isPublic() ) $page->addToBody($map->drawLinkTo()); //on sort les cartes publiques.
 				
 			}
 				

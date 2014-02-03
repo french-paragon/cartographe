@@ -1,6 +1,14 @@
 <?php
 
 	require_once 'baseAjax.php';
+?>
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
+		<meta http-equiv="content-style-type" content="text/css">
+		<link rel="stylesheet" type="text/css" href="../styles/br.css"></head><body>
+<?php
 
 	if(isset($_POST['sauver'])){
 		
@@ -52,3 +60,4 @@
 	}
 
 ?>
+</body></html>
