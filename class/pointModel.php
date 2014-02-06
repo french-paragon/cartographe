@@ -37,6 +37,10 @@
 			return $params;
 		}
 		
+		public function drawPointInfosBGModel(&$pPoint, $contextSize){
+			return "";
+		}
+		
 		public function getParamForm(&$pPoint){ //delfaut param form
 		
 			return '<input type="hidden" name="defModelName" value="'.$pPoint->getModelName().'"><label for"modelParam">Paramètre du modèle:</label><br><textarea id="modelParam" name="modelParam" style="height: 150px; width: '.(point::FORMLARGNESS*3).'px ;">'.$pPoint->getStringModelParam().'</textarea>';

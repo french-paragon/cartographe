@@ -164,6 +164,16 @@
 			
 		}
 		
+		public function drawPointInfosBG($contextSize) {
+			
+			if ($this->message != self::NOMODELFOUNDMESSAGE) { //si un model a bien été chargé.
+				
+				return $this->model->drawPointInfosBGModel($this, $contextSize);
+				
+			}
+			
+		}
+		
 		public function drawPointInfosEditor(){
 			
 			global $conf, $conf_values;

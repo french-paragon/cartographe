@@ -195,6 +195,12 @@
 			
 			foreach($this->pts as $pt) {
 			
+				$page->addToBody($pt->drawPointInfosBG($this->size));
+				
+			}
+			
+			foreach($this->pts as $pt) {
+			
 				$page->addToBody($pt->drawPoint());
 				
 			}
