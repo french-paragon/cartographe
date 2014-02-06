@@ -26,6 +26,8 @@
 		protected $width;
 		protected $heigth;
 		
+		// valeurs utilisées dans la mise en place de l'aperçu.
+		
 		protected $showImage = self::IMAGEEDITOR;
 		protected $showWidth = self::SHOWLARGNESS;
 		protected $showHeight = self::SHOWHEIGNESS;

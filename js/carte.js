@@ -23,11 +23,11 @@ function changeVisibility(id) {
 	
 	var node = document.getElementById(id);
 	
-	if (node.style.visibility == 'visible'){
-		node.style.visibility = 'hidden';
+	if (document.getElementById(id).style.visibility == 'visible'){
+		document.getElementById(id).style.visibility = 'hidden';
 	}
 	else {
-		node.style.visibility = 'visible';
+		document.getElementById(id).style.visibility = 'visible';
 	}
 	
 }

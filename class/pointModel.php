@@ -14,9 +14,9 @@
 		
 		abstract protected function drawPointInfosModel (&$pPoint, $contextSize);
 		
-		abstract protected function drawPointEditableModel(&$pPoint, $contextSize);
+		abstract protected function drawPointEditableModel(&$pPoint, $contextSize); // seem's useless
 
-		abstract protected function initModelRelatedParams(&$pPoint);
+		abstract protected function initModelRelatedParams(&$pPoint); //permet de reconfigurer le points avec les paramètres liés au modèle
 
 		protected function initParamList (&$pPoint) {
 
@@ -38,7 +38,7 @@
 		}
 		
 		public function drawPointInfosBGModel(&$pPoint, $contextSize){
-			return "";
+			return ""; // return nothing by delfaut, point's usually dont write on background
 		}
 		
 		public function getParamForm(&$pPoint){ //delfaut param form
