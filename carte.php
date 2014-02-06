@@ -24,7 +24,7 @@
 		
 		if (is_a($map, 'carte')) { //si aucune erreur est survenue on peut charger la carte
 			
-			if( $map->isPublic() ) {
+			if( $map->isPublic() OR (isset($_SESSION["log"]) AND $_SESSION["log"]->hasUserAdminRights()) ) {
 			
 				$map->drawCardWithPoints();
 				$drawList = false;
