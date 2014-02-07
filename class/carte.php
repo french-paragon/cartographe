@@ -265,7 +265,7 @@
 		
 			echo '<table id="'.$this->index.'tableEdit">
 				<tr><td><img src="'.$this->image_fond.'" alt = "image non trouvée" width="200px" heigth="150px"/></td><td><a class="linkTitle" href="carte.php?map='.$this->name.'" target="_blank">'.$this->name.'</a><br><br>'.
-				'<div class="editlinks"><a href="admin.php?tool=maps&map='.$this->index.'">Infos</a> | <a href="mapEditor.php?map='.$this->index.'" target="_blank">editor</a> | <button onclick="del(\''.$this->index.'\')" >delete</button></div></td></tr>
+				'<div class="editlinks"><a href="admin.php?tool=maps&map='.$this->index.'" target="_blank">Infos</a> | <a href="mapEditor.php?map='.$this->index.'" target="_blank">editor</a> | <button onclick="del(\''.$this->index.'\')" >delete</button></div></td></tr>
 			</table><br><br>';
 			
 		}

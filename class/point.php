@@ -264,7 +264,7 @@
 							  <td><div class="linkTitle"> Boutton: '.$this->id.'</div>'.$this->description.'</td>
 							</tr>
 							<tr>
-							  <td><div class="editlinks"><a href="pointEditor.php?point='.$this->id.'">éditer</a> | <button onclick="delPoint(\''.$this->id.'\')" >delete</button></div></td>
+							  <td><div class="editlinks"><a href="pointEditor.php?point='.$this->id.'" target="_blank">éditer</a> | <button onclick="delPoint(\''.$this->id.'\')" >delete</button></div></td>
 							</tr>
 						  </tbody><br></table>';
 		
