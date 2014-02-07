@@ -1,6 +1,8 @@
 <?php 
 
 	class SVGBGShowerPointModel extends pointModel{
+
+		const DELFAULTPARAMS = 'points_models/delfaut/delfaut.png';
 		
 		const IMAGEPOS = 0;
 		const SVGBGPOS = 1;
@@ -9,6 +11,28 @@
 		const POINTBRILLANCEIMG = 'points_models/delfaut/deco.png';
 
 		const BORDERDISTANCE = 20;
+		
+		/*
+		 * @override 
+		 */
+		protected function initParamList (&$pPoint) {
+
+			$params = $pPoint->getModelParam();
+
+			if (is_string($params)) {
+
+				$params = explode('@', $params); // @ is less use in svg code than ,
+				$pPoint->setModelParam($params);
+
+			} elseif (!is_array($params)) {
+
+				$params = explode('@', self::DELFAULTPARAMS);
+				$pPoint->setModelParam($params);
+
+			}
+
+			return $params;
+		}
 		
 		public function drawEditor() {}
 
@@ -37,8 +61,16 @@
 			global $conf_values;
 
 			$params = $this->initParamList($pPoint);
+			
+			$svgText = '<script>
+				window.onscroll = function (event) {
+					// called when the window is scrolled.
+					
+					document.getElementById(\''.$pPoint->getID().'pt\').setAttribute("transform", "translate(" + window.pageXOffset + ", " + window.pageYOffset + ")");
+				}
+			</script>';
 
-			$svgText = '<g  id="'.$pPoint->getID().'pt" onclick="changeVisibility(\''.$pPoint->getID().'SVGBG\'); changeVisibility(\''.$pPoint->getID().'SVGFG\');" onmouseover="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'visible\';" onmouseout="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'hidden\';" title="'.$pPoint->getDescription().'">';
+			$svgText .= '<g  id="'.$pPoint->getID().'pt" onclick="changeVisibility(\''.$pPoint->getID().'SVGBG\'); changeVisibility(\''.$pPoint->getID().'SVGFG\');" onmouseover="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'visible\';" onmouseout="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'hidden\';" title="'.$pPoint->getDescription().'" style=" position : fixed; top : 0;">';
 			$svgText .= '<image id="'.$pPoint->getID().'_deco" style=" visibility : hidden;" '.$pPoint->getXMLPosWD(-8).' xlink:href="'.$conf_values['rootFolder'].self::POINTBRILLANCEIMG.'" height="'.($pPoint->getHeigth() + 16).'" width="'.($pPoint->getWidth() + 16).'" viewbox="'.($pPoint->getX() - 8).' '.($pPoint->getY() - 8).' '.($pPoint->getWidth() + 16).' '.($pPoint->getHeigth() + 16).'" preserveAspectRatio="xMidYMid Slice" />';
 			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$conf_values['rootFolder'].$params[self::IMAGEPOS].'" '.$pPoint->getXMLSize().' viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
 
