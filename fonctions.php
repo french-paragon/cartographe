@@ -1,10 +1,18 @@
 <?php
 
 	function url_exists($url) {
+		
+		if(isset($conf) and $conf_values['check_external_url']){
     
-		$headers = @get_headers($url);
-		if(strpos($headers[0],'200')===false)return false;
-		return true;
+			$headers = @get_headers($url);
+			if(strpos($headers[0],'200')===false)return false;
+			return true;
+			
+		} else{
+			
+			return preg_match('^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$', $url);
+			
+		}
 	
 	}
 

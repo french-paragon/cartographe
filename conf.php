@@ -14,4 +14,6 @@ $conf_values['rootFolder'] = null;
 
 $conf_values['installed_points_model'] = array ('delfautPointModel', 'linkPointModel', 'SVGBGShowerPointModel');
 
+$conf_values['check_external_url'] = false; //par défaut on ne vérifie pas les url extene, juste la séquence de l'url, ceci pour éviter des temps de chargement trops long.
+
 ?>
