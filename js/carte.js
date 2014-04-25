@@ -78,6 +78,29 @@ function move(id, e) {
 	
 }
 
+function moveToken(id, e) {
+
+	if(draggable != null){
+		if(draggable.getAttribute("id") == id){
+			
+			x = originalXPos + (parseInt(e.pageX, 10) - originalMouseXPos);
+			y = originalYPos + (parseInt(e.pageY, 10) - originalMouseYPos);
+			
+			draggable.setAttribute("x", x) ;
+			draggable.setAttribute("y", y);
+			
+		}
+		
+	}
+	
+}
+
+function unsetDragableToken(id){
+	
+	draggable = null;
+	
+}
+
 imageAttr = null;
 
 function unsetDragable(id){

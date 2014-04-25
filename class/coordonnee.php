@@ -58,12 +58,23 @@
 
 	} 
 
+	public function getCoordonnee(){
+
+		return new coordonnee($this->x.','.$this->y);
+
+	} 
+
 	public function getXMLPos() {
 		return 'x="'.$this->x.'" y="'.$this->y.'"';
 	}
 
 	public function getXMLPosWD($pD) {
-		return 'x="'.($this->x + $pD).'" y="'.($this->y + $pD).'"';
+		if(is_numeric($pD))
+			return 'x="'.($this->x + $pD).'" y="'.($this->y + $pD).'"';
+		elseif(is_a($pD, 'coordonnee'))
+			return 'x="'.($this->x + $pD->getX()).'" y="'.($this->y + $pD->getY()).'"';
+			
+		return 'x="'.$this->x.'" y="'.$this->y.'"';
 	}
 
 	public function getXMLSize() {
