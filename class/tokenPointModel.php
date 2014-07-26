@@ -5,6 +5,8 @@
 		const DELFAULTPARAMS = 'points_models/delfaut/delfaut.png';
 		
 		const IMAGEPOS = 0;
+		const TOKENWIDTHPOS = 1;
+		const TOKENHEIGHTPOS = 2;
 		
 		const POINTBRILLANCEIMG = './points_models/delfaut/deco.png';
 
@@ -38,7 +40,7 @@
 			
 			$s = count($params);
 			
-			$dx = $pPoint->getWidth() + self::BORDERDISTANCE;
+			$dx = $params[self::TOKENWIDTHPOS] + self::BORDERDISTANCE;
 			$f = ($pPoint->getX() + ($s-1)*$dx + 2*self::BORDERDISTANCE > $contextSize->getX() && $pPoint->getX() > ($s-1)*$dx - 2*self::BORDERDISTANCE) ? -1 : 1;
 			
 			$dx *= $f;
@@ -46,9 +48,9 @@
 			$pos = new coordonnee( $f*2*self::BORDERDISTANCE .',0');
 			
 			
-			for($i = 1; $i < $s; $i++){
+			for($i = 3; $i < $s; $i++){
 				
-				$svgtext .= '<image id="'.$pPoint->getID().$i.'_token" '.$pPoint->getXMLPosWD($pos).' xlink:href="'.$conf_values['rootFolder'].$params[$i].'" height="'.$pPoint->getHeigth().'" width="'.$pPoint->getWidth().'" viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" onmousedown="setDragable(\''.$pPoint->getID().$i.'_token\', evt);" onmousemove="moveToken(\''.$pPoint->getID().$i.'_token\', evt);" onmouseup="unsetDragableToken(\''.$pPoint->getID().$i.'_token\');"/>';
+				$svgtext .= '<image id="'.$pPoint->getID().$i.'_token" '.$pPoint->getXMLPosWD($pos).' xlink:href="'.$conf_values['rootFolder'].$params[$i].'" height="'.$params[self::TOKENHEIGHTPOS].'" width="'.$params[self::TOKENWIDTHPOS].'" viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$params[self::TOKENWIDTHPOS].' '.$params[self::TOKENHEIGHTPOS].'" preserveAspectRatio="xMidYMid Slice" onmousedown="setDragable(\''.$pPoint->getID().$i.'_token\', evt);" onmousemove="moveToken(\''.$pPoint->getID().$i.'_token\', evt);" onmouseup="unsetDragableToken(\''.$pPoint->getID().$i.'_token\');"><title>'.$params[++$i].'</title></image>';
 				
 				$pos->setX($pos->getX() + $dx);
 				
@@ -92,11 +94,42 @@
 		
 		public function getParamForm(&$pPoint){ //delfaut param form
 		
-			return '<input type="hidden" name="defModelName" value="'.$pPoint->getModelName().'"><label for"modelParam">Paramètre du modèle:</label><br><textarea id="modelParam" name="modelParam" style="height: 150px; width: '.(point::FORMLARGNESS*3).'px ;">'.$pPoint->getStringModelParam().'</textarea>';
+			$params = array();
+
+			$params = $this->initParamList($pPoint);
+			
+			$end_list = '';
+			
+			$s = count($params);
+			
+			for($i = 3; $i < $s; $i++){
+				
+				$end_list .= $params[$i].','.$params[++$i];
+				if($i < $s-2) $end_list .= ',';
+				
+			}
+		
+			return '<label for="img_tool">Image du Button principal:&nbsp;</label><input id="img_tool" name="img_tool" type="text" width="'.point::FORMLARGNESS.'" value="'.$params[self::IMAGEPOS].'">
+			<br><br>
+			<label for="tokenWPL">Largeur des tokens:&nbsp;</label><input id="tokenWPL" name="tokenWPL" type="number" width="'.point::FORMLARGNESS.'" value="'.$params[self::TOKENWIDTHPOS].'">&nbsp;&nbsp;&nbsp;<label for="tokenHPL">Hauteur des tokens:&nbsp;</label><input id="tokenHPL" name="tokenHPL" type="number" width="'.point::FORMLARGNESS.'" value="'.$params[self::TOKENHEIGHTPOS].'">
+			<br><br>
+			<input type="hidden" name="defModelName" value="'.$pPoint->getModelName().'"><label for"modelParam">Liste des tokens:</label><br><textarea id="modelParam" name="modelParam" style="height: 150px; width: '.(point::FORMLARGNESS*3).'px ;">'.$end_list.'</textarea>';
 			
 		}
 		
 		public function treatParamForm(&$pPoint){
+			
+			$retour = '';
+			
+			if(isset($_POST['img_tool']))
+				$retour = prepareSave($_POST['img_tool']);
+			else
+				$retour = self::DELFAULTPARAMS;
+				
+			if(isset($_POST['tokenWPL']) AND isset($_POST['tokenHPL']))
+				$retour .= ','.intval($_POST['tokenWPL']).','.intval($_POST['tokenHPL']);
+			else
+				$retour .= ','.$pPoint->getWidth().','.$pPoint->getHeigth();
 			
 			if(isset($_POST['modelParam']) && isset($_POST['defModelName']) ){
 			
@@ -106,9 +139,11 @@
 					$p[$key] = prepareSave($val);
 				}
 				//if ($pPoint->getModelName() == $_GET['defModelName']) //avoid to set wrong parameter.
-				return implode(',', $p);
+				$retour .= ','.implode(',', $p);
 				
 			}
+			
+			return $retour;
 			
 		}
 		
