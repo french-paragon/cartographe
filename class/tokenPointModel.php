@@ -7,6 +7,7 @@
 		const IMAGEPOS = 0;
 		const TOKENWIDTHPOS = 1;
 		const TOKENHEIGHTPOS = 2;
+		const NOTOKENDEFPARAMNB = 3;
 		
 		const POINTBRILLANCEIMG = './points_models/delfaut/deco.png';
 
@@ -41,20 +42,86 @@
 			$svgtext = '<g id="'.$pPoint->getID().'_tokens" style=" visibility : hidden;">';
 			
 			$s = count($params);
+			$nb = ($s-self::NOTOKENDEFPARAMNB)/2;
 			
-			$dx = $params[self::TOKENWIDTHPOS] + self::BORDERDISTANCE;
-			$f = ($pPoint->getX() + ($s-1)*$dx + 2*self::BORDERDISTANCE > $contextSize->getX() && $pPoint->getX() > ($s-1)*$dx - 2*self::BORDERDISTANCE) ? -1 : 1;
+			$eqr_t = (floatval($params[self::TOKENHEIGHTPOS]) + floatval($params[self::TOKENWIDTHPOS])) /4;
+			$eqr_p = ( $pPoint->getWidth() + $pPoint->getHeigth() ) /4;
+			$alpha = 2*M_PI / $nb;
+			$r = (self::BORDERDISTANCE + 2*$eqr_t)*1.5 / (sqrt(pow(sin($alpha), 2) + pow((1 - cos($alpha)),2))); // calculate the radius so the distance between point is self::BORDERDISTANCE (more or less)
+			$r_fact = 1/1.5;
 			
+			$f = 1; //sens trigonométrique
+			
+			$spos = M_PI_2;
+			$mpos = $spos + 2*M_PI;
+			
+			$hb = 0;
+			if($pPoint->getY() + $r + 2*self::BORDERDISTANCE > $contextSize->getY()) $hb = -1; // un bord en bas
+			if($pPoint->getY() < $r + 2*self::BORDERDISTANCE ) $hb = 1; // un bord en haut
+			
+			$sb = 0;
+			if($pPoint->getX() + $r + 2*self::BORDERDISTANCE > $contextSize->getX()) $hb = -1; // un bord à droite
+			if($pPoint->getX() < $r + 2*self::BORDERDISTANCE ) $hb = 1; // un bord à gauche
+			
+			if($hb == 0){ // pas de bornes verticale
+				
+				if($sb == 1){ // borne à gauche
+					$spos = acos(-$pPoint->getX()/($r + 2*self::BORDERDISTANCE));
+					$mpos = -$spos;
+					$f = -1; // sens antitrigonométrique
+				} else if($sb == -1) { // borne à droite
+					$spos = acos(($contextSize->getX()-$pPoint->getX())/($r + 2*self::BORDERDISTANCE));
+					$mpos = 2*M_PI - $spos;
+				}
+				
+			} else if($hb == 1){ //borne en haut
+				
+				if($sb == 0){ // pas de bornes latéralle
+					$spos = asin($pPoint->getY()/($r + 2*self::BORDERDISTANCE));
+					$mpos = - $spos - M_PI;
+					$f = -1; // sens antitrigonométrique
+				}else if($sb == 1){ // borne à gauche
+					$spos = asin($pPoint->getY()/($r + 2*self::BORDERDISTANCE));
+					$mpos = -acos(-$pPoint->getX()/($r + 2*self::BORDERDISTANCE));
+					$f = -1; // sens antitrigonométrique
+				} else if($sb == -1) { // borne à droite
+					$spos = M_PI - asin($pPoint->getY()/($r + 2*self::BORDERDISTANCE));
+					$mpos = 2*M_PI - acos(($contextSize->getX()-$pPoint->getX())/($r + 2*self::BORDERDISTANCE));
+				}
+				
+			} else if($hb == -1){ //borne en bas
+				
+				if($sb == 0){ // pas de bornes latéralle
+					$spos = -asin(($contextSize->getY()-$pPoint->getY())/($r + 2*self::BORDERDISTANCE));
+					$mpos = M_PI + $spos;
+				}else if($sb == 1){ // borne à gauche
+					$spos = -asin(($contextSize->getY()-$pPoint->getY())/($r + 2*self::BORDERDISTANCE));
+					$mpos = acos(-$pPoint->getX()/($r + 2*self::BORDERDISTANCE));
+				} else if($sb == -1) { // borne à droite
+					$spos = acos(($contextSize->getX()-$pPoint->getX())/($r + 2*self::BORDERDISTANCE));
+					$mpos = M_PI - asin(($contextSize->getY()-$pPoint->getY())/($r + 2*self::BORDERDISTANCE));
+				}
+				
+			}
+			
+			$r_fact = min(1/1.5,$r_fact*2*M_PI/abs($spos - $mpos));
+			$r *= $r_fact;
+			
+			if($r < $eqr_p + $eqr_t + self::BORDERDISTANCE) $r = $eqr_p + $eqr_t + self::BORDERDISTANCE;
+			
+			$dx = ($hb == 0 AND $sb == 0) ? abs($spos - $mpos)/($nb) : abs($spos - $mpos)/($nb-1);
 			$dx *= $f;
 			
-			$pos = new coordonnee( $f*2*self::BORDERDISTANCE .',0');
+			$ddx = (floatval($params[self::TOKENWIDTHPOS]) - $pPoint->getWidth())/2;
+			$ddy = (floatval($params[self::TOKENHEIGHTPOS]) - $pPoint->getHeigth())/2;
 			
+			for($i = self::NOTOKENDEFPARAMNB; $i < $s; $i++){
 			
-			for($i = 3; $i < $s; $i++){
+				$pos = new coordonnee( ($r*cos($spos) - $ddx) .','. ($r*sin($spos) - $ddy) );
 				
 				$svgtext .= '<image id="'.$pPoint->getID().$i.'_token" '.$pPoint->getXMLPosWD($pos).' xlink:href="'.$conf_values['rootFolder'].$params[$i].'" height="'.$params[self::TOKENHEIGHTPOS].'" width="'.$params[self::TOKENWIDTHPOS].'" viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$params[self::TOKENWIDTHPOS].' '.$params[self::TOKENHEIGHTPOS].'" preserveAspectRatio="xMidYMid Slice" onmousedown="setDragable(\''.$pPoint->getID().$i.'_token\', evt);" onmousemove="moveToken(\''.$pPoint->getID().$i.'_token\', evt);" onmouseup="unsetDragableToken(\''.$pPoint->getID().$i.'_token\');"><title>'.$params[++$i].'</title></image>';
 				
-				$pos->setX($pos->getX() + $dx);
+				$spos += $dx;
 				
 			}
 			
