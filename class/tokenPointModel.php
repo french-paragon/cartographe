@@ -8,6 +8,7 @@
 		const TOKENWIDTHPOS = 1;
 		const TOKENHEIGHTPOS = 2;
 		const NOTOKENDEFPARAMNB = 3;
+		const TOKENPARAMNB = 3;
 		
 		const POINTBRILLANCEIMG = './points_models/delfaut/deco.png';
 
@@ -42,7 +43,7 @@
 			$svgtext = '<g id="'.$pPoint->getID().'_tokens" style=" visibility : hidden;">';
 			
 			$s = count($params);
-			$nb = ($s-self::NOTOKENDEFPARAMNB)/2;
+			$nb = ($s-self::NOTOKENDEFPARAMNB)/self::TOKENPARAMNB;
 			
 			$eqr_t = (floatval($params[self::TOKENHEIGHTPOS]) + floatval($params[self::TOKENWIDTHPOS])) /4;
 			$eqr_p = ( $pPoint->getWidth() + $pPoint->getHeigth() ) /4;
@@ -115,11 +116,28 @@
 			$ddx = (floatval($params[self::TOKENWIDTHPOS]) - $pPoint->getWidth())/2;
 			$ddy = (floatval($params[self::TOKENHEIGHTPOS]) - $pPoint->getHeigth())/2;
 			
-			for($i = self::NOTOKENDEFPARAMNB; $i < $s; $i++){
+			for($i = self::NOTOKENDEFPARAMNB; $i < $s; $i += self::TOKENPARAMNB){
 			
 				$pos = new coordonnee( ($r*cos($spos) - $ddx) .','. ($r*sin($spos) - $ddy) );
 				
-				$svgtext .= '<image id="'.$pPoint->getID().$i.'_token" '.$pPoint->getXMLPosWD($pos).' xlink:href="'.$conf_values['rootFolder'].$params[$i].'" height="'.$params[self::TOKENHEIGHTPOS].'" width="'.$params[self::TOKENWIDTHPOS].'" viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$params[self::TOKENWIDTHPOS].' '.$params[self::TOKENHEIGHTPOS].'" preserveAspectRatio="xMidYMid Slice" onmousedown="setDragable(\''.$pPoint->getID().$i.'_token\', evt);" onmousemove="moveToken(\''.$pPoint->getID().$i.'_token\', evt);" onmouseup="unsetDragableToken(\''.$pPoint->getID().$i.'_token\');"><title>'.$params[++$i].'</title></image>';
+				$svgtext .= '<image id="'.$pPoint->getID().$i.'_token" '.$pPoint->getXMLPosWD($pos).' xlink:href="'.$conf_values['rootFolder'].$params[$i].'" height="'.$params[self::TOKENHEIGHTPOS].'" width="'.$params[self::TOKENWIDTHPOS].'" viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$params[self::TOKENWIDTHPOS].' '.$params[self::TOKENHEIGHTPOS].'" preserveAspectRatio="xMidYMid Slice" ';
+				
+				$svgtext .= 'onmousedown="setDragable(\''.$pPoint->getID().$i.'_token\', evt);" 
+				onmousemove="moveToken(\''.$pPoint->getID().$i.'_token\', evt);" 
+				onmouseup="unsetDragableToken(\''.$pPoint->getID().$i.'_token\');"'; 
+				
+				if(preg_match("&^(https?:\/\/)?([\da-z\.-]+)\/?([\da-z_-]+\/)*([\da-z_-]+)?(\?([\da-z_-]+=[\da-z_-]+)*)?(#[\da-z_-]*)?$&", $params[$i+2])){
+				
+					$svgtext .= 'onclick = "if(evt.detail == 2){ window.open(\''.$params[$i+2].'\');}"';
+					
+				} else if(preg_match("#^pointclick@[\da-zA-Z]+$#", $params[$i+2])){
+					
+					$svgtext .= 'onclick = "if(evt.detail == 2){ document.getElementById(\''.substr($params[$i+2], 11).'\').onclick();}"';
+					
+				}
+				
+				$svgtext .= '><title>'.$params[$i+1].'</title></image>';
+				
 				
 				$spos += $dx;
 				
