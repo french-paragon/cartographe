@@ -45,3 +45,6 @@ images/*
 .project
 .settings/*
 
+# sauvegarde locale #
+#####################
+sql/save/*
