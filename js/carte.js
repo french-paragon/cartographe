@@ -3,15 +3,21 @@ viewedPict = null;
 function viewInfo(id) {
 
 	if (document.getElementById(id+'Infos') !== viewedPict) {
-		if (viewedPict != null) {viewedPict.style.visibility = 'hidden';}
+		if (viewedPict != null) {
+			viewedPict.style.visibility = 'hidden';
+			viewedPict.style.display = 'none';
+		}
 		document.getElementById(id+'Infos').style.visibility = 'visible';
+		document.getElementById(id+'Infos').style.display = 'inline';
 	}
 	else if(document.getElementById(id+'Infos') == viewedPict) {
 		if (viewedPict.style.visibility == 'visible'){
 		viewedPict.style.visibility = 'hidden';
+		viewedPict.style.display = 'none';
 		}
 		else {
 		viewedPict.style.visibility = 'visible';
+		viewedPict.style.display = 'inline';
 		}
 	}
     
@@ -25,9 +31,11 @@ function changeVisibility(id) {
 	
 	if (document.getElementById(id).style.visibility == 'visible'){
 		document.getElementById(id).style.visibility = 'hidden';
+		document.getElementById(id).style.display = 'none';
 	}
 	else {
 		document.getElementById(id).style.visibility = 'visible';
+		document.getElementById(id).style.display = 'inline';
 	}
 	
 }

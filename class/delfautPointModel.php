@@ -117,7 +117,7 @@
 
 				}
 
-				$svgText = "\n<g  id=\"".$pPoint->getID()."Infos\" style=\" visibility : hidden;\" transform=\"translate(".$pos.")\">\n\t";
+				$svgText = "\n<g  id=\"".$pPoint->getID()."Infos\" style=\" visibility : hidden; display : none;\" transform=\"translate(".$pos.")\">\n\t";
 				$jumps = 0;
 				
 				//paramètres par défaut
