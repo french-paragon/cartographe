@@ -34,11 +34,11 @@
 		
 		public function initModelRelatedParams(&$pPoint){
 		
-			$params = $this->initParamList($pPoint);
+			$this->params = $this->initParamList($pPoint);
 			
-			if(isset($params[self::IMAGEPOS])) $pPoint->setShowImage($params[self::IMAGEPOS]);
-			if(isset($params[self::LEGENDHEIGHTPOS])) $pPoint->setShowHeight(floatval($pPoint->getHeigth()) + floatval($params[self::LEGENDHEIGHTPOS]) + floatval(3*self::BORDERDISTANCE) );
-			if(isset($params[self::LEGENDWIDTHPOS])) $pPoint->setShowWidth(floatval($params[self::LEGENDWIDTHPOS]) + floatval(2*self::BORDERDISTANCE));
+			if(isset($this->params[self::IMAGEPOS])) $pPoint->setShowImage($this->params[self::IMAGEPOS]);
+			if(isset($this->params[self::LEGENDHEIGHTPOS])) $pPoint->setShowHeight(floatval($pPoint->getHeigth()) + floatval($this->params[self::LEGENDHEIGHTPOS]) + floatval(3*self::BORDERDISTANCE) );
+			if(isset($this->params[self::LEGENDWIDTHPOS])) $pPoint->setShowWidth(floatval($this->params[self::LEGENDWIDTHPOS]) + floatval(2*self::BORDERDISTANCE));
 			
 		}
 		
@@ -46,10 +46,10 @@
 
 			global $conf_values;
 
-			$params = $this->initParamList($pPoint);
+			$this->params = $this->initParamList($pPoint);
 
 			$svgText = '<g  id="'.$pPoint->getID().'" onclick="setDraggable(\''.$pPoint->getID().'\', true);" onmousemove="move(\''.$pPoint->getID().'\');" onmouserelease="setDraggable(\''.$pPoint->getID().'\', false);" onmouseover="document.getElementById(\''.$pPoint->getID().'_editP\').style.visibility = \'visible\';" title="'.$pPoint->getDescription().'">';
-			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$conf_values['rootFolder'].$params[self::IMAGEPOS].'" '.$pPoint->getXMLSize().' viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
+			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$conf_values['rootFolder'].$this->params[self::IMAGEPOS].'" '.$pPoint->getXMLSize().' viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
 
 			$svgText .= '<foreignobject '.$pPoint->getXMLPos().$pPoint->getXMLSize().'><body xmlns=\"http://www.w3.org/1999/xhtml\"><div></div></body></foreignobject></g>';
 
@@ -64,15 +64,15 @@
 
 			global $conf_values;
 
-			$params = $this->initParamList($pPoint);
+			$this->params = $this->initParamList($pPoint);
 
 			$svgText = '<g  id="'.$pPoint->getID().'pt" onclick="viewInfo(\''.$pPoint->getID().'\');" onmouseover="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'visible\';" onmouseout="document.getElementById(\''.$pPoint->getID().'_deco\').style.visibility = \'hidden\';">';
 			$svgText .= '<image id="'.$pPoint->getID().'_deco" style=" visibility : hidden;" '.$pPoint->getXMLPosWD(-8).' xlink:href="'.$conf_values['rootFolder'].self::POINTBRILLANCEIMG.'" height="'.($pPoint->getHeigth() + 16).'" width="'.($pPoint->getWidth() + 16).'" viewbox="'.($pPoint->getX() - 8).' '.($pPoint->getY() - 8).' '.($pPoint->getWidth() + 16).' '.($pPoint->getHeigth() + 16).'" preserveAspectRatio="xMidYMid Slice" />';
 			
-			if(isset($params[self::TITLEPOS]))
-				$svgText .= '<title>'.$params[self::TITLEPOS].'</title>';
+			if(isset($this->params[self::TITLEPOS]))
+				$svgText .= '<title>'.$this->params[self::TITLEPOS].'</title>';
 			
-			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$conf_values['rootFolder'].$params[self::IMAGEPOS].'" '.$pPoint->getXMLSize().' viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
+			$svgText .= '<image '.$pPoint->getXMLPos().' xlink:href="'.$conf_values['rootFolder'].$this->params[self::IMAGEPOS].'" '.$pPoint->getXMLSize().' viewbox="'.$pPoint->getX().' '.$pPoint->getY().' '.$pPoint->getWidth().' '.$pPoint->getHeigth().'" preserveAspectRatio="xMidYMid Slice" />';
 
 			$svgText .= '<foreignobject '.$pPoint->getXMLPos().' '.$pPoint->getXMLSize().'><body xmlns=\"http://www.w3.org/1999/xhtml\"><div></div></body></foreignobject></g>';
 
@@ -80,141 +80,182 @@
 
 		}
 		
+		protected function generateInfosBackground(){
+			
+			global $conf_values;
+		
+			$svgText = '';
+		
+			if (file_exists($conf_values['rootFolder'].$this->params[self::LEGENDBGPOS]) && is_file($conf_values['rootFolder'].$this->params[self::LEGENDBGPOS])) {
+				$svgText .= '<image y="0" x="0" xlink:href="'.$conf_values['rootFolder'].$this->params[self::LEGENDBGPOS].'" height="'.$this->params[self::LEGENDHEIGHTPOS].'" width="'.$this->params[self::LEGENDWIDTHPOS].'" viewbox="0 0 '.$this->params[self::LEGENDWIDTHPOS].' '.$this->params[self::LEGENDHEIGHTPOS].'" preserveAspectRatio="none" />';
+
+				//protection de l'image
+				$svgText .= '<foreignobject x="0" y="0" width="'.$this->params[self::LEGENDWIDTHPOS].'" height="'.$this->params[self::LEGENDHEIGHTPOS].'"><body><div></div></body></foreignobject>'; 
+			} else {
+				$svgText .= '<rect style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" width="'.$this->params[self::LEGENDWIDTHPOS].'" height="'.$this->params[self::LEGENDHEIGHTPOS].'" x="0" y="0" />';
+			}
+			
+			return $svgText;
+		
+		}
+		
+		protected function configureDefaultParam(){
+		
+			if(!isset($this->params[self::LEGENDBGPOS]))
+				$this->params[self::LEGENDBGPOS] = null;
+				
+			if(!isset($this->params[self::TITLELINKPOS]))
+				$this->params[self::TITLELINKPOS] = null;
+				
+			if(!isset($this->params[self::IMAGELINKPOS]))
+				$this->params[self::IMAGELINKPOS] = null;
+				
+			if(!isset($this->params[self::LEGENDTITLEHEIGHTPOS]))
+				$this->params[self::LEGENDTITLEHEIGHTPOS] = self::TITLESTYLEHEIGHT;
+					
+		}
+		
+		protected function calcultateInfosPos(&$pPoint, $contextSize){
+		
+			$lSize = new coordonnee($this->params[self::LEGENDWIDTHPOS].','.$this->params[self::LEGENDHEIGHTPOS]);
+			$pos = $pPoint->getDiff($lSize);
+
+			$pos->setX($pos->getX() + ($this->params[self::LEGENDWIDTHPOS]/2) + ($pPoint->getWidth()/2));
+			$pos->setY($pos->getY() - self::BORDERDISTANCE);
+
+			//si la position est au delà du bord droit:
+			if($pos->getX() > $contextSize->getX() - $this->params[self::LEGENDWIDTHPOS] - self::BORDERDISTANCE) {
+
+				$pos->setX($pPoint->getX() - $this->params[self::LEGENDWIDTHPOS] - self::BORDERDISTANCE);
+				$pos->setY($pPoint->getY() - ($this->params[self::LEGENDHEIGHTPOS]/2));
+
+			} elseif ($pos->getX() < self::BORDERDISTANCE) { //si la position est trop pres du bord gauche:
+			
+				$pos->setX($pPoint->getX() + $pPoint->getWidth() + self::BORDERDISTANCE);
+				$pos->setY($pPoint->getY() - ($this->params[self::LEGENDHEIGHTPOS]/2));
+
+			}
+
+			if ($pos->getY() >  $contextSize->getY() - $this->params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE) { // si le cadre est trop près du bas
+			
+				$pos->setY($pPoint->getY()- $this->params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE);
+				
+			} elseif ($pos->getY() < self::BORDERDISTANCE ){ //si le point est trop prêt du haut
+
+				$pos->setY($pPoint->getY() + $pPoint->getHeigth() + self::BORDERDISTANCE);
+
+			}
+			
+			return $pos;
+			
+		}
+
+		protected function generateInfosContent(){
+			
+			global $conf_values;
+					
+			$jumps = 0;
+			$svgText = '';
+
+			if($this->params[self::TITLEPOS] != null ) {
+
+				$svgText .= '<foreignobject x="'.self::BORDERDISTANCE.'" y="'.self::BORDERDISTANCE.'" width="'.($this->params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" height="'.$this->params[self::LEGENDTITLEHEIGHTPOS].'" ><html><body  xmlns=\"http://www.w3.org/1999/xhtml\"><div class="'.self::TITLESTYLERULE.'">';
+				
+				if(isset($this->params[self::TITLELINKPOS]) && $this->params[self::TITLELINKPOS] != '')
+					$svgText .= '<a href="'.$this->params[self::TITLELINKPOS].'">'.$this->params[self::TITLEPOS].'</a></div></body></html></foreignobject>';
+				else
+					$svgText .=  $this->params[self::TITLEPOS].'</div></body></html></foreignobject>';
+
+				$jumps++;
+
+			}
+
+			if ($this->params[self::LEGENDIMAGEPOS] != null AND file_exists($conf_values['rootFolder'].$this->params[self::LEGENDIMAGEPOS]) ) {
+
+				$h = self::BORDERDISTANCE;
+				
+				if ($jumps == 1){
+
+					$h += $this->params[self::LEGENDTITLEHEIGHTPOS] + 5;
+				}
+				
+				$this->params[self::LEGENDIMAGEHEIGHTPOS] = ($this->params[self::LEGENDIMAGEHEIGHTPOS] <= $this->params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h) ? $this->params[self::LEGENDIMAGEHEIGHTPOS] : $this->params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h;
+
+				$svgText .= '<image y="'.$h.'" x="'.self::BORDERDISTANCE.'" xlink:href="'.$conf_values['rootFolder'].$this->params[self::LEGENDIMAGEPOS].'" height="'.$this->params[self::LEGENDIMAGEHEIGHTPOS].'" width="'.($this->params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" viewbox="0 0 '.($this->params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).' '.$this->params[self::LEGENDIMAGEHEIGHTPOS].'" preserveAspectRatio="xMidYMid" />';
+
+				$svgText .= '<foreignobject x="'.self::BORDERDISTANCE.'" y="'.$h.'" width="'.($this->params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" height="'.$this->params[self::LEGENDIMAGEHEIGHTPOS].'"><body><div></div></body></foreignobject>';
+
+				$jumps += 2;
+
+			}else if ($this->params[self::LEGENDIMAGEPOS] != null AND url_exists($this->params[self::LEGENDIMAGEPOS]) ) {
+
+				$h = self::BORDERDISTANCE;
+				
+				if ($jumps == 1){
+
+					$h += $this->params[self::LEGENDTITLEHEIGHTPOS] + 5;
+				}
+				
+				$this->params[self::LEGENDIMAGEHEIGHTPOS] = ($this->params[self::LEGENDIMAGEHEIGHTPOS] <= $this->params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h) ? $this->params[self::LEGENDIMAGEHEIGHTPOS] : $this->params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h;
+
+				$svgText .= '<image y="'.$h.'" x="'.self::BORDERDISTANCE.'" xlink:href="'.$this->params[self::LEGENDIMAGEPOS].'" height="'.$this->params[self::LEGENDIMAGEHEIGHTPOS].'" width="'.($this->params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" viewbox="0 0 '.($this->params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).' '.$this->params[self::LEGENDIMAGEHEIGHTPOS].'" preserveAspectRatio="xMidYMid" />';
+
+				$svgText .= '<foreignobject x="'.self::BORDERDISTANCE.'" y="'.$h.'" width="'.($this->params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" height="'.$this->params[self::LEGENDIMAGEHEIGHTPOS].'"><body><div></div></body></foreignobject>';
+
+				$jumps += 2;
+
+			}
+
+			if ($this->params[self::LEGENDTEXTPOS] != null ) {
+
+				$h = self::BORDERDISTANCE;
+
+				if ($jumps == 1) {
+					$h += $this->params[self::LEGENDTITLEHEIGHTPOS] + 5;
+				} elseif ($jumps == 2) {
+					$h += $this->params[self::LEGENDIMAGEHEIGHTPOS] + 5;
+				} elseif ($jumps == 3) {
+					$h += $this->params[self::LEGENDTITLEHEIGHTPOS] + $this->params[self::LEGENDIMAGEHEIGHTPOS] + 10;
+				}
+
+				$hh = $this->params[self::LEGENDHEIGHTPOS] - $h; //la place qui reste.
+
+				if ( $hh > (20 + self::BORDERDISTANCE) ){ //si on a de la place pour écrire.
+					
+					$svgText .= '<foreignobject x="'.self::BORDERDISTANCE.'" y="'.$h.'" width="'.($this->params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" height="'.($hh-self::BORDERDISTANCE).'" ><html><body  xmlns=\"http://www.w3.org/1999/xhtml\"><div class="'.self::TEXTSTYLERULE.'">'.$this->params[self::LEGENDTEXTPOS].'</div></body></html></foreignobject>';
+
+				}
+
+			}
+			
+			return $svgText;	
+		}
+		
 		public function drawPointInfosModel (&$pPoint, $contextSize){
 
 			global $conf_values;
 
-			$params = $this->initParamList($pPoint);
+			$this->params = $this->initParamList($pPoint);
 
-			if(isset($params[self::TITLEPOS]) || isset($params[self::LEGENDIMAGEPOS]) || isset($params[self::LEGENDTEXTPOS]) ) {
-
-				$lSize = new coordonnee($params[self::LEGENDWIDTHPOS].','.$params[self::LEGENDHEIGHTPOS]);
-				$pos = $pPoint->getDiff($lSize);
-
-				$pos->setX($pos->getX() + ($params[self::LEGENDWIDTHPOS]/2) + ($pPoint->getWidth()/2));
-				$pos->setY($pos->getY() - self::BORDERDISTANCE);
-
-				//si la position est au delà du bord droit:
-				if($pos->getX() > $contextSize->getX() - $params[self::LEGENDWIDTHPOS] - self::BORDERDISTANCE) {
-
-					$pos->setX($pPoint->getX() - $params[self::LEGENDWIDTHPOS] - self::BORDERDISTANCE);
-					$pos->setY($pPoint->getY() - ($params[self::LEGENDHEIGHTPOS]/2));
-
-				} elseif ($pos->getX() < self::BORDERDISTANCE) { //si la position est trop pres du bord gauche:
+			if(isset($this->params[self::TITLEPOS]) || isset($this->params[self::LEGENDIMAGEPOS]) || isset($this->params[self::LEGENDTEXTPOS]) ) {
 				
-					$pos->setX($pPoint->getX() + $pPoint->getWidth() + self::BORDERDISTANCE);
-					$pos->setY($pPoint->getY() - ($params[self::LEGENDHEIGHTPOS]/2));
+				//calculer la position
 
-				}
-
-				if ($pos->getY() >  $contextSize->getY() - $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE) { // si le cadre est trop près du bas
-				
-					$pos->setY($pPoint->getY()- $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE);
-					
-				} elseif ($pos->getY() < self::BORDERDISTANCE ){ //si le point est trop prêt du haut
-
-					$pos->setY($pPoint->getY() + $pPoint->getHeigth() + self::BORDERDISTANCE);
-
-				}
+				$pos = $this->calcultateInfosPos($pPoint, $contextSize);
 
 				$svgText = "\n<g  id=\"".$pPoint->getID()."Infos\" style=\" visibility : hidden; display : none;\" transform=\"translate(".$pos.")\">\n\t";
-				$jumps = 0;
 				
 				//paramètres par défaut
-				
-				if(!isset($params[self::LEGENDBGPOS]))
-					$params[self::LEGENDBGPOS] = null;
-					
-				if(!isset($params[self::TITLELINKPOS]))
-					$params[self::TITLELINKPOS] = null;
-					
-				if(!isset($params[self::IMAGELINKPOS]))
-					$params[self::IMAGELINKPOS] = null;
-					
-				if(!isset($params[self::LEGENDTITLEHEIGHTPOS]))
-					$params[self::LEGENDTITLEHEIGHTPOS] = self::TITLESTYLEHEIGHT;
+
+				$this->configureDefaultParam();
 
 				//génération du fond
 					
-				if (file_exists($conf_values['rootFolder'].$params[self::LEGENDBGPOS]) && is_file($conf_values['rootFolder'].$params[self::LEGENDBGPOS])) {
-					$svgText .= '<image y="0" x="0" xlink:href="'.$conf_values['rootFolder'].$params[self::LEGENDBGPOS].'" height="'.$params[self::LEGENDHEIGHTPOS].'" width="'.$params[self::LEGENDWIDTHPOS].'" viewbox="0 0 '.$params[self::LEGENDWIDTHPOS].' '.$params[self::LEGENDHEIGHTPOS].'" preserveAspectRatio="none" />';
-
-					//protection de l'image
-					$svgText .= '<foreignobject x="0" y="0" width="'.$params[self::LEGENDWIDTHPOS].'" height="'.$params[self::LEGENDHEIGHTPOS].'"><body><div></div></body></foreignobject>'; 
-				} else {
-					$svgText .= '<rect style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" width="'.$params[self::LEGENDWIDTHPOS].'" height="'.$params[self::LEGENDHEIGHTPOS].'" x="0" y="0" />';
-				}
-
-				if($params[self::TITLEPOS] != null ) {
-
-					$svgText .= '<foreignobject x="'.self::BORDERDISTANCE.'" y="'.self::BORDERDISTANCE.'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" height="'.$params[self::LEGENDTITLEHEIGHTPOS].'" ><html><body  xmlns=\"http://www.w3.org/1999/xhtml\"><div class="'.self::TITLESTYLERULE.'">';
-					
-					if(isset($params[self::TITLELINKPOS]) && $params[self::TITLELINKPOS] != '')
-						$svgText .= '<a href="'.$params[self::TITLELINKPOS].'">'.$params[self::TITLEPOS].'</a></div></body></html></foreignobject>';
-					else
-						$svgText .=  $params[self::TITLEPOS].'</div></body></html></foreignobject>';
-
-					$jumps++;
-
-				}
-
-				if ($params[self::LEGENDIMAGEPOS] != null AND file_exists($conf_values['rootFolder'].$params[self::LEGENDIMAGEPOS]) ) {
-
-					$h = self::BORDERDISTANCE;
-					
-					if ($jumps == 1){
-
-						$h += $params[self::LEGENDTITLEHEIGHTPOS] + 5;
-					}
-					
-					$params[self::LEGENDIMAGEHEIGHTPOS] = ($params[self::LEGENDIMAGEHEIGHTPOS] <= $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h) ? $params[self::LEGENDIMAGEHEIGHTPOS] : $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h;
-
-					$svgText .= '<image y="'.$h.'" x="'.self::BORDERDISTANCE.'" xlink:href="'.$conf_values['rootFolder'].$params[self::LEGENDIMAGEPOS].'" height="'.$params[self::LEGENDIMAGEHEIGHTPOS].'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" viewbox="0 0 '.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).' '.$params[self::LEGENDIMAGEHEIGHTPOS].'" preserveAspectRatio="xMidYMid" />';
-
-					$svgText .= '<foreignobject x="'.self::BORDERDISTANCE.'" y="'.$h.'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" height="'.$params[self::LEGENDIMAGEHEIGHTPOS].'"><body><div></div></body></foreignobject>';
-
-					$jumps += 2;
-
-				}else if ($params[self::LEGENDIMAGEPOS] != null AND url_exists($params[self::LEGENDIMAGEPOS]) ) {
-
-					$h = self::BORDERDISTANCE;
-					
-					if ($jumps == 1){
-
-						$h += $params[self::LEGENDTITLEHEIGHTPOS] + 5;
-					}
-					
-					$params[self::LEGENDIMAGEHEIGHTPOS] = ($params[self::LEGENDIMAGEHEIGHTPOS] <= $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h) ? $params[self::LEGENDIMAGEHEIGHTPOS] : $params[self::LEGENDHEIGHTPOS] - self::BORDERDISTANCE - $h;
-
-					$svgText .= '<image y="'.$h.'" x="'.self::BORDERDISTANCE.'" xlink:href="'.$params[self::LEGENDIMAGEPOS].'" height="'.$params[self::LEGENDIMAGEHEIGHTPOS].'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" viewbox="0 0 '.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).' '.$params[self::LEGENDIMAGEHEIGHTPOS].'" preserveAspectRatio="xMidYMid" />';
-
-					$svgText .= '<foreignobject x="'.self::BORDERDISTANCE.'" y="'.$h.'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" height="'.$params[self::LEGENDIMAGEHEIGHTPOS].'"><body><div></div></body></foreignobject>';
-
-					$jumps += 2;
-
-				}
-
-				if ($params[self::LEGENDTEXTPOS] != null ) {
-
-					$h = self::BORDERDISTANCE;
-
-					if ($jumps == 1) {
-						$h += $params[self::LEGENDTITLEHEIGHTPOS] + 5;
-					} elseif ($jumps == 2) {
-						$h += $params[self::LEGENDIMAGEHEIGHTPOS] + 5;
-					} elseif ($jumps == 3) {
-						$h += $params[self::LEGENDTITLEHEIGHTPOS] + $params[self::LEGENDIMAGEHEIGHTPOS] + 10;
-					}
-
-					$hh = $params[self::LEGENDHEIGHTPOS] - $h; //la place qui reste.
-
-					if ( $hh > (20 + self::BORDERDISTANCE) ){ //si on a de la place pour écrire.
-						
-						$svgText .= '<foreignobject x="'.self::BORDERDISTANCE.'" y="'.$h.'" width="'.($params[self::LEGENDWIDTHPOS] - (2*self::BORDERDISTANCE)).'" height="'.($hh-self::BORDERDISTANCE).'" ><html><body  xmlns=\"http://www.w3.org/1999/xhtml\"><div class="'.self::TEXTSTYLERULE.'">'.$params[self::LEGENDTEXTPOS].'</div></body></html></foreignobject>';
-
-					}
-
-				}
+				$svgText .= $this->generateInfosBackground();
+				
+				//génération du contenus
+				
+				$svgText .= $this->generateInfosContent();
 				
 				$svgText .= "\n</g>\n";
 
@@ -223,20 +264,18 @@
 			} else {
 				return "";
 			}
-
 			
-
 		}
 		
 		public function getParamForm(&$pPoint){ //delfaut param form
 		
-			$params = array();
+			$this->params = array();
 
-			$params = $this->initParamList($pPoint);
+			$this->params = $this->initParamList($pPoint);
 			
 			for($i = 0; $i < self::PARAMLISTSIZE; ++$i){
 			
-				if (!isset($params[$i])) $params[$i] = '';
+				if (!isset($this->params[$i])) $this->params[$i] = '';
 				
 			}
 			
@@ -275,24 +314,24 @@
 			</script>';
 			
 			$html .= '<input type="hidden" name="defModelName" value="'.$pPoint->getModelName().'"><label for="imageFP">Image de fond du point:</label> 
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="imageFP" name="imageFP" type="text" value="'.$params[self::IMAGEPOS].'" width="'.point::FORMLARGNESS.'"><br><hr><br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="imageFP" name="imageFP" type="text" value="'.$this->params[self::IMAGEPOS].'" width="'.point::FORMLARGNESS.'"><br><hr><br>
 				
 				<label for="legendP">Paramètres de la légende:&nbsp;&nbsp;&nbsp; (activer la légende)</label><input type="checkbox" name="actived[]" id="legendP" value="SetLegend" onclick="disableElements()" checked><br><br>
 				
-				<label for="lP">Largeur:&nbsp;&nbsp;&nbsp;</label><input id="lP" name="lP" type="text" width="'.point::FORMLARGNESS.'" value="'.$params[self::LEGENDWIDTHPOS].'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label for="hP">Hauteur:&nbsp;&nbsp;&nbsp;</label><input id="hP" name="hP" type="text" width="'.point::FORMLARGNESS.'" value="'.$params[self::LEGENDHEIGHTPOS].'"><br><br>
+				<label for="lP">Largeur:&nbsp;&nbsp;&nbsp;</label><input id="lP" name="lP" type="text" width="'.point::FORMLARGNESS.'" value="'.$this->params[self::LEGENDWIDTHPOS].'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <label for="hP">Hauteur:&nbsp;&nbsp;&nbsp;</label><input id="hP" name="hP" type="text" width="'.point::FORMLARGNESS.'" value="'.$this->params[self::LEGENDHEIGHTPOS].'"><br><br>
 				
-				<label for="titrePL">Titre:&nbsp;</label><input id="titrePL" name="titrePL" type="text" width="'.point::FORMLARGNESS.'" value="'.$params[self::TITLEPOS].'">&nbsp;&nbsp;&nbsp;<label for="titreHPL">Hauteur du titre:&nbsp;</label><input id="titreHPL" name="titreHPL" type="text" width="'.point::FORMLARGNESS.'" value="'.$params[self::LEGENDTITLEHEIGHTPOS].'">&nbsp;&nbsp;&nbsp; <input id="titreHPLC" type="checkbox" name="actived[]" value="SetTitre" onclick="disableTwoElem(\'titrePL\', \'titreHPL\', \'titreHPLC\')" checked><br><br>
+				<label for="titrePL">Titre:&nbsp;</label><input id="titrePL" name="titrePL" type="text" width="'.point::FORMLARGNESS.'" value="'.$this->params[self::TITLEPOS].'">&nbsp;&nbsp;&nbsp;<label for="titreHPL">Hauteur du titre:&nbsp;</label><input id="titreHPL" name="titreHPL" type="text" width="'.point::FORMLARGNESS.'" value="'.$this->params[self::LEGENDTITLEHEIGHTPOS].'">&nbsp;&nbsp;&nbsp; <input id="titreHPLC" type="checkbox" name="actived[]" value="SetTitre" onclick="disableTwoElem(\'titrePL\', \'titreHPL\', \'titreHPLC\')" checked><br><br>
 				
-				<label for="imagePL">Image:&nbsp;</label><input id="imagePL" name="imagePL" type="text" width="'.point::FORMLARGNESS.'" value="'.$params[self::LEGENDIMAGEPOS].'">&nbsp;&nbsp;&nbsp;<label for="imageHPL">Hauteur du image:&nbsp;</label><input id="imageHPL" name="imageHPL" type="text" width="'.point::FORMLARGNESS.'" value="'.$params[self::LEGENDIMAGEHEIGHTPOS].'">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="actived[]" id="imageHPLC" value="SetImage"  
+				<label for="imagePL">Image:&nbsp;</label><input id="imagePL" name="imagePL" type="text" width="'.point::FORMLARGNESS.'" value="'.$this->params[self::LEGENDIMAGEPOS].'">&nbsp;&nbsp;&nbsp;<label for="imageHPL">Hauteur du image:&nbsp;</label><input id="imageHPL" name="imageHPL" type="text" width="'.point::FORMLARGNESS.'" value="'.$this->params[self::LEGENDIMAGEHEIGHTPOS].'">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="actived[]" id="imageHPLC" value="SetImage"  
 				onclick="disableTwoElem(\'imagePL\', \'imageHPL\', \'imageHPLC\')" checked><br><br>
 				
-				<label for="textPL">Texte:</label>&nbsp;&nbsp;&nbsp;<label for="textHPLC">(désactiver le texte)</label><input type="checkbox" name="actived[]" id="textHPLC" value="SetText" onclick="disableOneElem(\'textPL\', \'textHPLC\')" checked><br><textarea id="textPL" name="textPL" style="height: 150px; width: '.(point::FORMLARGNESS*3).'px ;">'.$params[self::LEGENDTEXTPOS].'</textarea><br><br><br>
+				<label for="textPL">Texte:</label>&nbsp;&nbsp;&nbsp;<label for="textHPLC">(désactiver le texte)</label><input type="checkbox" name="actived[]" id="textHPLC" value="SetText" onclick="disableOneElem(\'textPL\', \'textHPLC\')" checked><br><textarea id="textPL" name="textPL" style="height: 150px; width: '.(point::FORMLARGNESS*3).'px ;">'.$this->params[self::LEGENDTEXTPOS].'</textarea><br><br><br>
 				
-				<label for="lPBG">Image de fonds de la légende:&nbsp;&nbsp;&nbsp;</label><input id="lPBG" name="lPBG" type="text" width="'.point::FORMLARGNESS.'" value="'.$params[self::LEGENDBGPOS].'">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="actived[]" id="lPBGC" value="SetBGImage" onclick="disableOneElem(\'lPBG\', \'lPBGC\')" checked><br><br>
+				<label for="lPBG">Image de fonds de la légende:&nbsp;&nbsp;&nbsp;</label><input id="lPBG" name="lPBG" type="text" width="'.point::FORMLARGNESS.'" value="'.$this->params[self::LEGENDBGPOS].'">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="actived[]" id="lPBGC" value="SetBGImage" onclick="disableOneElem(\'lPBG\', \'lPBGC\')" checked><br><br>
 				
-				<label for="lPT">Lien du titre:&nbsp;&nbsp;&nbsp;</label><input id="lPT" name="lPT" type="text" width="'.point::FORMLARGNESS.'" value="'.$params[self::TITLELINKPOS].'">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="actived[]" id="lPTC" value="SetLinkTitle" onclick="disableOneElem(\'lPT\', \'lPTC\')" checked><br><br>
+				<label for="lPT">Lien du titre:&nbsp;&nbsp;&nbsp;</label><input id="lPT" name="lPT" type="text" width="'.point::FORMLARGNESS.'" value="'.$this->params[self::TITLELINKPOS].'">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="actived[]" id="lPTC" value="SetLinkTitle" onclick="disableOneElem(\'lPT\', \'lPTC\')" checked><br><br>
 				
-				<label for="lPI">Lien de l\'image:&nbsp;&nbsp;&nbsp;</label><input id="lPI" name="lPI" type="text" width="'.point::FORMLARGNESS.'" value="'.$params[self::IMAGELINKPOS].'">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="actived[]" id="lPIC" value="SetLinkImage" onclick="disableOneElem(\'lPI\', \'lPIC\')" checked><br><br>
+				<label for="lPI">Lien de l\'image:&nbsp;&nbsp;&nbsp;</label><input id="lPI" name="lPI" type="text" width="'.point::FORMLARGNESS.'" value="'.$this->params[self::IMAGELINKPOS].'">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="actived[]" id="lPIC" value="SetLinkImage" onclick="disableOneElem(\'lPI\', \'lPIC\')" checked><br><br>
 				
 				
 				';

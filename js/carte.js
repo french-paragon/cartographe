@@ -25,6 +25,19 @@ function viewInfo(id) {
 
 }
 
+function unhideSpoiler(id) {
+
+	secu = document.getElementById(id+'Protection');
+	spoil = document.getElementById(id+'Spoiler');
+	
+	secu.style.visibility = 'hidden';
+	secu.style.display = 'none';
+	
+	spoil.style.visibility = 'visible';
+	spoil.style.display = 'inline';
+	
+}
+
 function changeVisibility(id) {
 	
 	var node = document.getElementById(id);
