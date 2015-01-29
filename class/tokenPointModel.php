@@ -61,8 +61,8 @@
 			if($pPoint->getY() < $r + 2*self::BORDERDISTANCE ) $hb = 1; // un bord en haut
 			
 			$sb = 0;
-			if($pPoint->getX() + $r + 2*self::BORDERDISTANCE > $contextSize->getX()) $hb = -1; // un bord à droite
-			if($pPoint->getX() < $r + 2*self::BORDERDISTANCE ) $hb = 1; // un bord à gauche
+			if($pPoint->getX() + $r + 2*self::BORDERDISTANCE > $contextSize->getX()) $sb = -1; // un bord à droite
+			if($pPoint->getX() < $r + 2*self::BORDERDISTANCE ) $sb = 1; // un bord à gauche
 			
 			if($hb == 0){ // pas de bornes verticale
 				
@@ -78,11 +78,11 @@
 			} else if($hb == 1){ //borne en haut
 				
 				if($sb == 0){ // pas de bornes latéralle
-					$spos = asin($pPoint->getY()/($r + 2*self::BORDERDISTANCE));
-					$mpos = - $spos - M_PI;
+					$spos = -asin($pPoint->getY()/($r + 2*self::BORDERDISTANCE));
+					$mpos = 2*$spos - M_PI;
 					$f = -1; // sens antitrigonométrique
 				}else if($sb == 1){ // borne à gauche
-					$spos = asin($pPoint->getY()/($r + 2*self::BORDERDISTANCE));
+					$spos = -asin($pPoint->getY()/($r + 2*self::BORDERDISTANCE));
 					$mpos = -acos(-$pPoint->getX()/($r + 2*self::BORDERDISTANCE));
 					$f = -1; // sens antitrigonométrique
 				} else if($sb == -1) { // borne à droite
@@ -93,10 +93,10 @@
 			} else if($hb == -1){ //borne en bas
 				
 				if($sb == 0){ // pas de bornes latéralle
-					$spos = -asin(($contextSize->getY()-$pPoint->getY())/($r + 2*self::BORDERDISTANCE));
-					$mpos = M_PI + $spos;
+					$spos = asin(($contextSize->getY()-$pPoint->getY())/($r + 2*self::BORDERDISTANCE));
+					$mpos = M_PI - 2*$spos;
 				}else if($sb == 1){ // borne à gauche
-					$spos = -asin(($contextSize->getY()-$pPoint->getY())/($r + 2*self::BORDERDISTANCE));
+					$spos = asin(($contextSize->getY()-$pPoint->getY())/($r + 2*self::BORDERDISTANCE));
 					$mpos = acos(-$pPoint->getX()/($r + 2*self::BORDERDISTANCE));
 				} else if($sb == -1) { // borne à droite
 					$spos = acos(($contextSize->getX()-$pPoint->getX())/($r + 2*self::BORDERDISTANCE));
@@ -110,8 +110,8 @@
 			
 			if($r < $eqr_p + $eqr_t + self::BORDERDISTANCE) $r = $eqr_p + $eqr_t + self::BORDERDISTANCE;
 			
-			$dx = ($hb == 0 AND $sb == 0) ? abs($spos - $mpos)/($nb) : abs($spos - $mpos)/($nb-1);
-			$dx *= $f;
+			$dx = ($hb == 0 AND $sb == 0) ? abs($spos - $mpos)/($nb) : abs($spos - $mpos + $pPoint->getWidth()/(2*$r))/($nb-1);
+			$dx *= -$f;
 			
 			$ddx = (floatval($params[self::TOKENWIDTHPOS]) - $pPoint->getWidth())/2;
 			$ddy = (floatval($params[self::TOKENHEIGHTPOS]) - $pPoint->getHeigth())/2;
